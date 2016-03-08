@@ -176,6 +176,7 @@ namespace OneBox_WebServices.Controllers
                 {
                     user = UserManager.Find(userModel.Name, userModel.Password);
                     UserManager.AddToRole(user.Id, Utility.UsersRole);
+                    UserManager.AddToRole(user.Id, Utility.LocalUsersRoleName);
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -232,13 +233,66 @@ namespace OneBox_WebServices.Controllers
             return View(details);
         }
 
-        [Authorize]
         public ActionResult Logout()
         {
             AuthManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
 
+        [LocalUsersAuthorize(Utility.LocalUsersRoleName)]
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Change password of the authentificated user.
+        /// Return to home page if the action succeded.
+        /// </summary>
+        /// <param name="newPassViewModel">the model for new password</param>
+        /// <returns></returns>
+        [HttpPost]
+        [LocalUsersAuthorize(Utility.LocalUsersRoleName)]
+        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel newPassViewModel){
+            if(ModelState.IsValid)
+            {
+                string userId =  HttpContext.User.Identity.GetUserId();
+                if (userId == null)
+                {
+                    // TODO: something went wrong; sign out and redirect to home page.
+                }
+
+                AppUser user = await UserManager.FindByIdAsync(userId);
+                if (user == null)
+                {
+                    // TODO: something went wrong; sign out and redirect to home page.
+                }
+
+                ///Check if the given old password match the current password.
+                AppUser passwordCheckerUser = await UserManager.FindAsync(user.UserName, newPassViewModel.OldPassword);
+                if (passwordCheckerUser == null) {
+                    ModelState.AddModelError("", "The current password is wrong!");
+                    return View();    
+                }
+
+                /// Change the new password.
+                user.PasswordHash = UserManager.PasswordHasher.HashPassword(newPassViewModel.NewPassword);
+                var result = await UserManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    /// If the updated succesded redirect to main page.
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Something went wrong. Please try again.");
+                    return View();
+                }
+            }
+
+            return View();
+        }
+        
         private IAuthenticationManager AuthManager
         {
             get

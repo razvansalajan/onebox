@@ -42,6 +42,12 @@ namespace OneBox_WebServices.Infrastructure
             {
                 roleMgr.Create(new AppRole(roleName));
             }
+
+            if (!roleMgr.RoleExists(Utility.LocalUsersRoleName))
+            {
+                roleMgr.Create(new AppRole(Utility.LocalUsersRoleName));
+            }
+
             if (!roleMgr.RoleExists(Utility.UsersRole))
             {
                 roleMgr.Create(new AppRole(Utility.UsersRole));

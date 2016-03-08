@@ -13,5 +13,7 @@ namespace OneBox_WebServices.Utilities
         public static string AdminName = "admin";
         public static string AdminPassword = "admin1";
         public static string DatabseName = "oneboxdatabase";
+
+        public const string LocalUsersRoleName = "localregisteredusers";
     }
 }
