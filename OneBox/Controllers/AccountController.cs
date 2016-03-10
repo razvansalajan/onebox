@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.DataProtection;
 using OneBox_WebServices.Infrastructure;
 using OneBox_WebServices.Models;
 using OneBox_WebServices.Utilities;
@@ -196,6 +197,12 @@ namespace OneBox_WebServices.Controllers
             }
         }
 
+        /// <summary>
+        /// Check whether or not the given user can login within the application or not.
+        /// </summary>
+        /// <param name="details">the credential of the user.</param>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -233,12 +240,20 @@ namespace OneBox_WebServices.Controllers
             return View(details);
         }
 
+        /// <summary>
+        /// Log out the current user.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Logout()
         {
             AuthManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
 
+        /// <summary>
+        /// Change password. Just the users who have password can change their password.
+        /// </summary>
+        /// <returns></returns>
         [LocalUsersAuthorize(Utility.LocalUsersRoleName)]
         public ActionResult ChangePassword()
         {
@@ -249,7 +264,7 @@ namespace OneBox_WebServices.Controllers
         /// Change password of the authentificated user.
         /// Return to home page if the action succeded.
         /// </summary>
-        /// <param name="newPassViewModel">the model for new password</param>
+        /// <param name="newPassViewModel">the model for new password.</param>
         /// <returns></returns>
         [HttpPost]
         [LocalUsersAuthorize(Utility.LocalUsersRoleName)]
@@ -291,6 +306,80 @@ namespace OneBox_WebServices.Controllers
             }
 
             return View();
+        }
+
+        /// <summary>
+        /// Reset password action. Presents the user the page accesed through the link received in the email.
+        /// I need two methods. Because there is the case : initial case when the user try to recover for the first time.
+        /// Given that this is an http post with an object of ResetPasswordViewmodel; for the first time the given model will be empty so there will be errors but those errors are not made by the user.
+        /// </summary>
+        /// <param name="code">the corresponding code generated when a reset</param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        public ActionResult ResetPasswordPage(ResetPasswordViewModel model)
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> ResetPasswordLogic(ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                /// TODO: check if the model has the email set. For exemple if the page was accessed from a different source then the one given into email.
+                if (model.Email == null)
+                {
+                    /// do some retirect.
+                }
+                var user = await UserManager.FindByEmailAsync(model.Email);
+                if (user == null)
+                {
+
+                    // Don't reveal that the user does not exist
+                    ModelState.AddModelError("", "email is wrong");
+                    return View();
+                }
+
+                var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.NewPassword);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    AddErrosFromResult(result);
+                    return View();
+                }
+            }
+            return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                AppUser user = await UserManager.FindByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    ModelState.AddModelError("", "there is no account with the given email.");
+                    return View();
+                }
+                else
+                {
+                    string code = UserManager.GeneratePasswordResetToken(user.Id);
+                    //var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    /// acum fac callback-ul 
+                    /// ce cred ca se intampla : imi fac un obiect resetPasswordViewModel care ii facut de model binder cand se face apelul inapoi
+                    var callbackUrl = Url.Action("ResetPasswordPage", "Account", new ResetPasswordViewModel() {Code = code, Email=user.Email }, protocol: Request.Url.Scheme);
+                    await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    //return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            return View();  
         }
         
         private IAuthenticationManager AuthManager

@@ -25,6 +25,13 @@ namespace OneBox_WebServices.Controllers
         {
             return View();
         }
+        
+        [AllowAnonymous]
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
         /*
         private Dictionary<string, object> GetData(string actionName)
         {

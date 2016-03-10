@@ -38,7 +38,13 @@ namespace OneBox_WebServices.Infrastructure
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
             };
-
+            manager.EmailService = new EmailService();
+            var dataProtectionProvider = options.DataProtectionProvider;
+            if (dataProtectionProvider != null)
+            {
+                manager.UserTokenProvider =
+                    new DataProtectorTokenProvider<AppUser>(dataProtectionProvider.Create("Onebox"));
+            }
             return manager;
         }
     }
