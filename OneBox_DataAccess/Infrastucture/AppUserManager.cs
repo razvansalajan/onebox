@@ -2,15 +2,17 @@
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
-using OneBox_WebServices.Models;
+using OneBox_DataAccess.DatabaseContexts;
+using OneBox_DataAccess.Domain;
+using OneBox_DataAccess.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace OneBox_WebServices.Infrastructure
+namespace OneBox_DataAccess.Infrastucture
 {
-
     public class AppUserManager : UserManager<AppUser>
     {
         public AppUserManager(IUserStore<AppUser> store) :
@@ -48,5 +50,4 @@ namespace OneBox_WebServices.Infrastructure
             return manager;
         }
     }
-
 }

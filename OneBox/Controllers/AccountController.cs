@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.DataProtection;
+using OneBox_DataAccess.Domain;
+using OneBox_DataAccess.Infrastucture;
+using OneBox_DataAccess.Utilities;
 using OneBox_WebServices.Infrastructure;
-using OneBox_WebServices.Models;
-using OneBox_WebServices.Utilities;
 using OneBox_WebServices.ViewModels;
 using System;
 using System.Collections.Generic;

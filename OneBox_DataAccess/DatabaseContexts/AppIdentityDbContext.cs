@@ -1,14 +1,16 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using OneBox_WebServices.Models;
-using OneBox_WebServices.Utilities;
+using OneBox_DataAccess.Domain;
+using OneBox_DataAccess.Infrastucture;
+using OneBox_DataAccess.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace OneBox_WebServices.Infrastructure
+namespace OneBox_DataAccess.DatabaseContexts
 {
     public class AppIdentityDbContext : IdentityDbContext<AppUser>
     {

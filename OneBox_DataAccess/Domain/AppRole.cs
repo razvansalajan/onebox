@@ -2,14 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace OneBox_WebServices.Models
+namespace OneBox_DataAccess.Domain
 {
     public class AppRole : IdentityRole
     {
         public AppRole() : base() { }
         public AppRole(string name) : base(name) { }
-        
+
     }
 }
