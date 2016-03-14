@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "AccountInfo";
+}
+
+<h2>AccountInfo</h2>
+<div class="panel panel-primary">
+    <div class="panel-heading">User Details</div>
+    <table class="table table-striped">
+        @foreach (string key in Model.Keys)
+            {
+            <tr>
+                <th>@key</th>
+                <td>@Model[key]</td>
+            </tr>
+        }
+    </table>
+</div>
+
+@Html.ActionLink("Go to Admin page", "Index", "RoleAdmin", null, new { @class = "btn btn-primary" })
+@Html.ActionLink("Change Password", "ChangePassword", "Account", null, new { @class = "btn btn-primary" })
+

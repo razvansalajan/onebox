@@ -11,6 +11,10 @@ namespace OneBox_WebServices.Controllers
     {
         public ActionResult Index()
         {
+            if (Request.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Account");
+            }
             return View();
         }
         /*
@@ -20,6 +24,14 @@ namespace OneBox_WebServices.Controllers
             return View("Index", GetData("OtherAction"));
         }
         */
+
+        [AllowAnonymous]
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+
         [AllowAnonymous]
         public ActionResult Register()
         {

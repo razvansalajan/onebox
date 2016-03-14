@@ -5,19 +5,14 @@
 }
 
 <h2>Index</h2>
-<div class="panel panel-primary">
-    <div class="panel-heading">User Details</div>
-    <table class="table table-striped">
-        @foreach (string key in Model.Keys)
-            {
-            <tr>
-                <th>@key</th>
-                <td>@Model[key]</td>
-            </tr>
-        }
-    </table>
-</div>
 
-@Html.ActionLink("Go to Admin page", "Index", "RoleAdmin", null, new { @class = "btn btn-primary" })
-@Html.ActionLink("Sign Out", "Logout", "Account", null, new { @class = "btn btn-primary" })
-@Html.ActionLink("Change Password", "ChangePassword", "Account", null, new { @class = "btn btn-primary" })
+<!--
+    part for uploading files.    
+-->
+
+<form>
+    <span>Select file(s) to upload :</span>
+        <input id="file1" name="file1" type="file" multiple="multiple" />
+    <input class="btn btn-primary" id="button1" type="button" value="Upload" />
+</form>
+

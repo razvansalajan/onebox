@@ -27,6 +27,11 @@ namespace OneBox_WebServices.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
+            return View();
+        }
+
+        public ActionResult AccountInfo()
+        {
             return View(GetInfoData());
         }
 
