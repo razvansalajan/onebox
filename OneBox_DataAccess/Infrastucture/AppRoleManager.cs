@@ -21,7 +21,7 @@ namespace OneBox_DataAccess.Infrastucture
 
         public static AppRoleManager Create(IdentityFactoryOptions<AppRoleManager> options, IOwinContext context)
         {
-            return new AppRoleManager(new RoleStore<AppRole>(context.Get<AppIdentityDbContext>()));
+            return new AppRoleManager(new RoleStore<AppRole>(context.Get<ApplicationDbContext>()));
         }
     }
 }

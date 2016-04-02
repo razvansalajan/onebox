@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using OneBox_BusinessLogic.AzureStorage;
 using OneBox_DataAccess.Domain;
 using OneBox_DataAccess.Infrastucture;
 using OneBox_DataAccess.Utilities;
@@ -21,6 +22,12 @@ namespace OneBox_WebServices.Controllers
     /// Display the info for the user after authentification.
     public class AccountController : Controller
     {
+        private IAzureServices azureServices;
+        public AccountController(IAzureServices azureServices)
+        {
+            this.azureServices = azureServices;
+        }
+
         /// <summary>
         /// Returns what the user can do after authentification.
         /// </summary>
@@ -129,8 +136,16 @@ namespace OneBox_WebServices.Controllers
                 UserManager.AddToRole(user.Id, Utility.UsersRole);
             }
 
+            SettingsUserSuccesfullyLoggedIn(user.Email);
             /// Redirect to main page of the authentificated user.
             return RedirectToAction("Index");
+        }
+
+        private void SettingsUserSuccesfullyLoggedIn(string email)
+        {
+            // TODO : ceva erori pe aici ?
+            //AppUser user = UserManager.FindById(User.Identity.GetUserId());
+            azureServices.ConfigureServices(email);
         }
 
         /// <summary>
@@ -152,6 +167,7 @@ namespace OneBox_WebServices.Controllers
             info.Add("User", GetIdentityUser().Name);
             info.Add("Authentificated", GetIdentityUser().IsAuthenticated);
             info.Add("Authnetification type", GetIdentityUser().AuthenticationType);
+            info.Add("container name:", azureServices.GetContainerName());
             var id = GetIdentityUser().GetUserId();
 
             var user = UserManager.FindById(id);
@@ -234,10 +250,12 @@ namespace OneBox_WebServices.Controllers
                     {
                         //GetInfoData();
                         //returnView("Index", GetInfoData());
+                        SettingsUserSuccesfullyLoggedIn(user.Email);
                         return RedirectToAction("Index");
                     }
                     else {
                         //GetInfoData();
+                        SettingsUserSuccesfullyLoggedIn(user.Email);
                         return Redirect(returnUrl);
                     }
                 }

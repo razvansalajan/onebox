@@ -19,17 +19,19 @@ namespace OneBox_WebServices.Controllers
             {
                 string uploadPath = HttpContext.Current.Server.MapPath("~/uploads");
 
-                MyStreamProvider streamProvider = new MyStreamProvider(uploadPath);
-
+                //MyStreamProvider streamProvider = new MyStreamProvider(uploadPath);
+                var streamProvider = new MultipartMemoryStreamProvider();
                 await Request.Content.ReadAsMultipartAsync(streamProvider);
-
+                
                 List<string> messages = new List<string>();
-                foreach (var file in streamProvider.FileData)
+                
+                foreach (var file in streamProvider.Contents)
                 {
-                    FileInfo fi = new FileInfo(file.LocalFileName);
-                    messages.Add("File uploaded as " + fi.FullName + " (" + fi.Length + " bytes)");
-                }
+                    var dataStream = await file.ReadAsStreamAsync();
 
+                    messages.Add("File uploaded as " + dataStream.Length+ " bytes)");
+                }
+                 
                 return messages;
             }
             else

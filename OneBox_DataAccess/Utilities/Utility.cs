@@ -16,5 +16,10 @@ namespace OneBox_DataAccess.Utilities
         public static string DatabseName = "oneboxdatabase";
 
         public const string LocalUsersRoleName = "localregisteredusers";
+
+        public const string STORAGEACCOUNTNAME = "oneboxstorage";
+        public const string STORAGEACCOUNTKEY = "gKXXEdoe/AYAE7vBR1KeYiVgd6eo6bhbMpijnak9lfAg/y2T9Yxdtqq6QwkbvEegrciaFwaubP+PLqlVZ0YNjQ==";
+
+
     }
 }

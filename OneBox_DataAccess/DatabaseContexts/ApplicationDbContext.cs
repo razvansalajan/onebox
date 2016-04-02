@@ -12,27 +12,27 @@ using System.Threading.Tasks;
 
 namespace OneBox_DataAccess.DatabaseContexts
 {
-    public class AppIdentityDbContext : IdentityDbContext<AppUser>
+    public class ApplicationDbContext : IdentityDbContext<AppUser>
     {
-        public AppIdentityDbContext() : base("oneboxdatabase", throwIfV1Schema: false) { }
-        static AppIdentityDbContext()
+        public ApplicationDbContext() : base("oneboxdatabase", throwIfV1Schema: false) { }
+        static ApplicationDbContext()
         {
-            Database.SetInitializer<AppIdentityDbContext>(new IdentityDbInit());
+            Database.SetInitializer<ApplicationDbContext>(new IdentityDbInit());
         }
-        public static AppIdentityDbContext Create()
+        public static ApplicationDbContext Create()
         {
-            return new AppIdentityDbContext();
+            return new ApplicationDbContext();
         }
     }
     public class IdentityDbInit
- : DropCreateDatabaseIfModelChanges<AppIdentityDbContext>
+ : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
     {
-        protected override void Seed(AppIdentityDbContext context)
+        protected override void Seed(ApplicationDbContext context)
         {
             PerformInitialSetup(context);
             base.Seed(context);
         }
-        public void PerformInitialSetup(AppIdentityDbContext context)
+        public void PerformInitialSetup(ApplicationDbContext context)
         {
             AppUserManager userMgr = new AppUserManager(new UserStore<AppUser>(context));
             AppRoleManager roleMgr = new AppRoleManager(new RoleStore<AppRole>(context));

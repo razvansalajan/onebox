@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneBox_WebServices", "OneBo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneBox_DataAccess", "OneBox_DataAccess\OneBox_DataAccess.csproj", "{CEE1C012-1014-4944-9ACE-6697C15886EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneBox_BusinessLogic", "OneBox_BusinessLogic\OneBox_BusinessLogic.csproj", "{51651FA0-6B02-474E-987F-0F8119E9696D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{CEE1C012-1014-4944-9ACE-6697C15886EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEE1C012-1014-4944-9ACE-6697C15886EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEE1C012-1014-4944-9ACE-6697C15886EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51651FA0-6B02-474E-987F-0F8119E9696D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51651FA0-6B02-474E-987F-0F8119E9696D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51651FA0-6B02-474E-987F-0F8119E9696D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51651FA0-6B02-474E-987F-0F8119E9696D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

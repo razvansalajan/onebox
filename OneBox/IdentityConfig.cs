@@ -24,7 +24,7 @@ namespace OneBox_WebServices
         {
             //DataProtectionProvider = app.GetDataProtectionProvider();
             //Database.SetInitializer(new IdentityDbInit());
-            app.CreatePerOwinContext<AppIdentityDbContext>(AppIdentityDbContext.Create);
+            app.CreatePerOwinContext<ApplicationDbContext>(ApplicationDbContext.Create);
             app.CreatePerOwinContext<AppUserManager>(AppUserManager.Create);
             app.CreatePerOwinContext<AppRoleManager>(AppRoleManager.Create);
 

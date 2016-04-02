@@ -23,7 +23,7 @@ namespace OneBox_DataAccess.Infrastucture
 
         public static AppUserManager Create(IdentityFactoryOptions<AppUserManager> options, IOwinContext context)
         {
-            AppIdentityDbContext dbContext = context.Get<AppIdentityDbContext>();
+            ApplicationDbContext dbContext = context.Get<ApplicationDbContext>();
             AppUserManager manager = new AppUserManager(new UserStore<AppUser>(dbContext));
 
             manager.PasswordValidator = new PasswordValidator()
