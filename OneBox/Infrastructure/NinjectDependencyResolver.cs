@@ -1,5 +1,6 @@
 ﻿using Ninject;
 using OneBox_BusinessLogic.AzureStorage;
+using OneBox_DataAccess.Infrastucture.Azure.Storage;
 using OneBox_DataAccess.Repositories.Azure;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,7 @@ namespace OneBox_WebServices.Infrastructure
         {
             kernel.Bind<IAzureRepository>().To<BlockBlobRepository>().InSingletonScope();
             kernel.Bind<IAzureServices>().To<AzureService>().InSingletonScope();
+            kernel.Bind<ICloudBlobContainerServices>().To<MockCloudBlobContainerServices>().InSingletonScope();
         }
     }
 }

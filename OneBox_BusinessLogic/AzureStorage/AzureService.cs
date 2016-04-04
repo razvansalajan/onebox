@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OneBox_Infrastructure.DataTransferObjects;
 
 namespace OneBox_BusinessLogic.AzureStorage
 {
@@ -27,6 +28,11 @@ namespace OneBox_BusinessLogic.AzureStorage
         public string GetContainerName()
         {
             return azureRepository.GetContainerName();
+        }
+
+        public List<FileDto> GetFiles(string filePath)
+        {
+            return azureRepository.GetFiles(filePath);
         }
     }
 }

@@ -5,6 +5,7 @@ using OneBox_BusinessLogic.AzureStorage;
 using OneBox_DataAccess.Domain;
 using OneBox_DataAccess.Infrastucture;
 using OneBox_DataAccess.Utilities;
+using OneBox_Infrastructure.DataTransferObjects;
 using OneBox_WebServices.Infrastructure;
 using OneBox_WebServices.ViewModels;
 using System;
@@ -23,18 +24,50 @@ namespace OneBox_WebServices.Controllers
     public class AccountController : Controller
     {
         private IAzureServices azureServices;
+        private string defaultPath = "";
         public AccountController(IAzureServices azureServices)
         {
             this.azureServices = azureServices;
+            
+        }
+
+        public PartialViewResult ListOfFiles(string filePath)
+        {
+            return PartialView(GetFiles(filePath));
         }
 
         /// <summary>
         /// Returns what the user can do after authentification.
         /// </summary>
         /// <returns></returns>
-        public ActionResult Index()
+        public ActionResult Index(string filePath="")
         {
-            return View();
+            if (filePath == "")
+            {
+                filePath = azureServices.GetContainerName();
+            }
+            return View(GetFiles(filePath));
+        }
+
+        private FileSystemViewModel GetFiles(string filePath)
+        {
+            FileSystemViewModel fileSystem = new FileSystemViewModel();
+            foreach(FileDto item in azureServices.GetFiles(filePath))
+            {
+                string fileType = "folder";
+                if (!item.isFolder)
+                {
+                    fileType = "file";
+                }
+                fileSystem.fileSystemList.Add(new FileViewModel(item.fullPath, item.name, item.sizeInBytes, fileType));
+            }
+            string []folders = OneBox_DataAccess.Utilities.Utility.Split(filePath, '/');
+            for(int i=0; i<folders.Length; ++i)
+            {
+                fileSystem.pathList.Add(folders[i]);
+            }
+
+            return fileSystem;
         }
 
         public ActionResult AccountInfo()
@@ -146,6 +179,7 @@ namespace OneBox_WebServices.Controllers
             // TODO : ceva erori pe aici ?
             //AppUser user = UserManager.FindById(User.Identity.GetUserId());
             azureServices.ConfigureServices(email);
+            //defaultPath = "/" + azureServices.GetContainerName();
         }
 
         /// <summary>

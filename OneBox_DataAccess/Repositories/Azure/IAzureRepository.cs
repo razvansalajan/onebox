@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OneBox_Infrastructure.DataTransferObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,6 @@ namespace OneBox_DataAccess.Repositories.Azure
     {
         void ConfigureContainer(string containerName);
         string GetContainerName();
+        List<FileDto> GetFiles(string filePath);
     }
 }

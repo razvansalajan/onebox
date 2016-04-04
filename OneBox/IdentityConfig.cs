@@ -22,6 +22,7 @@ namespace OneBox_WebServices
     {
         public void Configuration(IAppBuilder app)
         {
+            
             //DataProtectionProvider = app.GetDataProtectionProvider();
             //Database.SetInitializer(new IdentityDbInit());
             app.CreatePerOwinContext<ApplicationDbContext>(ApplicationDbContext.Create);
@@ -37,6 +38,9 @@ namespace OneBox_WebServices
 
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
             app.UseGoogleAuthentication(clientId: "531756177323-22mt5oveklsf9f5vpd8fm2r3juuai450.apps.googleusercontent.com", clientSecret: "REAAZjLqSvkuVY3I8g2MXTZn");
+            
+
+            System.Console.WriteLine("dada: " + OneBox_DataAccess.Utilities.Utility.GetNextString("/adminyahoocom/testFolder", "/adminyahoocom"));
         }
     }
 }

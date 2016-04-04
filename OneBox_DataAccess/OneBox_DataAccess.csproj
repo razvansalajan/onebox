@@ -114,6 +114,10 @@
     <Compile Include="Domain\AppUser.cs" />
     <Compile Include="Infrastucture\AppRoleManager.cs" />
     <Compile Include="Infrastucture\AppUserManager.cs" />
+    <Compile Include="Infrastucture\Azure\Storage\CloudBlobContainerServices.cs" />
+    <Compile Include="Infrastucture\Azure\Storage\ICloudBlobContainerServices.cs" />
+    <Compile Include="Infrastucture\Azure\Storage\MockCloudBlobContainerServices.cs" />
+    <Compile Include="Infrastucture\Mirrors\ListBlobItemMirror.cs" />
     <Compile Include="Migrations\201603162313356_init-creation.cs" />
     <Compile Include="Migrations\201603162313356_init-creation.Designer.cs">
       <DependentUpon>201603162313356_init-creation.cs</DependentUpon>
@@ -125,7 +129,12 @@
     <Compile Include="Utilities\EmailService.cs" />
     <Compile Include="Utilities\Utility.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\OneBox_Infrastructure\OneBox_Infrastructure.csproj">
+      <Project>{45f653e0-3bd4-474a-b4b9-ab1dcdb58874}</Project>
+      <Name>OneBox_Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />

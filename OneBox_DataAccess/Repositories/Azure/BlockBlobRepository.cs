@@ -1,6 +1,9 @@
 ﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using OneBox_DataAccess.Infrastucture.Azure.Storage;
+using OneBox_DataAccess.Infrastucture.Mirrors;
 using OneBox_DataAccess.Utilities;
+using OneBox_Infrastructure.DataTransferObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,47 +14,68 @@ namespace OneBox_DataAccess.Repositories.Azure
 {
     public class BlockBlobRepository : IAzureRepository
     {
-        private string containerName;
-        private CloudBlobContainer cloudBlobContainer;
+        ICloudBlobContainerServices cloudBlobContainerServices;
 
-        public BlockBlobRepository()
+        public BlockBlobRepository(ICloudBlobContainerServices services)
         {
+            cloudBlobContainerServices = services;
             //ContainerName = containerName;
             //SetUpContainer();
         }
 
         public void ConfigureContainer(string containerName)
         {
-            // TODO : create a table in database with email - > id
-            // the contaner should be an id instead of the email (email has illegal charchaters).
-            foreach(char c in containerName)
-            {
-                if ( (c < 'a' || c > 'z') && c != '-' && (c <'0' || c > '9'))
-                {
-                    continue;
-                }
-                else
-                {
-                    this.containerName += c;
-                }
-            }
-
-            SetUpContainer();                        
-        }
-
-        private void SetUpContainer()
-        {
-            string connectionString = string.Format(@"DefaultEndpointsProtocol=http;AccountName={0};AccountKey={1}",
-           Utility.STORAGEACCOUNTNAME, Utility.STORAGEACCOUNTKEY);
-            CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(connectionString);
-            CloudBlobClient cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
-            cloudBlobContainer = cloudBlobClient.GetContainerReference(containerName);
-            cloudBlobContainer.CreateIfNotExists();
+            cloudBlobContainerServices.SetupNewContainer(containerName);
         }
 
         public string GetContainerName()
         {
-            return containerName;
+            return cloudBlobContainerServices.GetContainerName();
+        }
+
+        public List<FileDto> GetFiles(string filePath)
+        {
+            filePath = Utility.Convention(filePath);
+            List<FileDto> files = new List<FileDto>();
+            IEnumerable<ListBlobItemMirror> listBlobItem = cloudBlobContainerServices.GetFlatBlobList();
+            Dictionary<string, long> itemsSet = new Dictionary<string, long>();
+            foreach(ListBlobItemMirror blob in listBlobItem)
+            {   
+                string s = Utility.GetNextString(blob.Uri_AboslutePath, filePath);
+                if (s == "")
+                {
+                    continue;
+                }
+                if (!Utility.IsFolder(s))
+                {
+                    itemsSet.Add(s, blob.LengthInBytes);
+                }
+                else
+                {
+                    if (itemsSet.ContainsKey(s))
+                    {
+                        
+                        itemsSet[s] += blob.LengthInBytes;
+                    }
+                    else
+                    {
+                        itemsSet.Add(s, blob.LengthInBytes);
+                    }
+                }
+                
+            }
+            foreach(var x in itemsSet)
+            {
+                bool isFile = true;
+                if (Utility.IsFolder(x.Key))
+                {
+                    isFile = false;
+                }
+                string absolutePath = Utility.Convention(filePath + x.Key);
+                files.Add(new FileDto(absolutePath, x.Key, isFile, x.Value.ToString()));
+            }
+            
+            return files;
         }
     }
 }

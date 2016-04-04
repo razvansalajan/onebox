@@ -1,0 +1,44 @@
+﻿@model OneBox_WebServices.ViewModels.FileSystemViewModel
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        @{
+            string currentPath = "";
+        }
+        @foreach (string s in Model.pathList)
+        {
+            currentPath = currentPath + "/" + s;
+            <div class='table_of_files_row' data-href='@currentPath'>
+                @s->
+            </div>
+        }
+    </div>
+
+    <table class="table table-striped">
+        <tr>
+            <th>fullpath</th>
+            <th>name</th>
+            <th>size</th>
+        </tr>
+        @if (Model.fileSystemList.Count() == 0)
+            {
+            <tr>
+                <td colspan="3" class="text-center">
+                    the folder is empty!
+                </td>
+            </tr>
+        }
+        else
+        {
+            foreach (var item in Model.fileSystemList)
+            {
+                <tr class='table_of_files_row' data-href='@item.fullPath'>
+                    <td>@item.fullPath</td>
+                    <td>@item.name</td>
+                    <td>@item.sizeInBytes</td>
+
+                </tr>
+            }
+        }
+    </table>
+
+</div>

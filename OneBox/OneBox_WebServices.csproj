@@ -212,11 +212,13 @@
     <Content Include="scripts\bootstrap.min.js" />
     <None Include="Properties\PublishProfiles\onebox.pubxml" />
     <None Include="scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="scripts\GetFiles.js" />
     <Content Include="scripts\jquery-1.10.2.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
     <Content Include="scripts\jquery-2.2.1.js" />
     <Content Include="scripts\jquery-2.2.1.min.js" />
     <Content Include="scripts\modernizr-2.6.2.js" />
+    <Content Include="scripts\OneBox_scripts.js" />
     <Content Include="scripts\UploadFile.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -246,6 +248,8 @@
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
+    <Compile Include="ViewModels\FileSystemViewModel.cs" />
+    <Compile Include="ViewModels\FileViewModel.cs" />
     <Compile Include="ViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
@@ -286,6 +290,7 @@
     <Content Include="Views\Account\AccountInfo.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Account\ListOfFiles.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -307,6 +312,10 @@
     <ProjectReference Include="..\OneBox_DataAccess\OneBox_DataAccess.csproj">
       <Project>{cee1c012-1014-4944-9ace-6697c15886ee}</Project>
       <Name>OneBox_DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OneBox_Infrastructure\OneBox_Infrastructure.csproj">
+      <Project>{45f653e0-3bd4-474a-b4b9-ab1dcdb58874}</Project>
+      <Name>OneBox_Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
