@@ -1,0 +1,12 @@
+﻿.list-currentpath-item{
+    color:cadetblue;
+    display:inline;
+}
+
+.list-currentpath-item:hover{
+    color:red;
+}
+
+.table-of-files-row-item{
+    cursor : pointer;
+}

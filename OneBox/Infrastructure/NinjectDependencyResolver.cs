@@ -32,7 +32,8 @@ namespace OneBox_WebServices.Infrastructure
         {
             kernel.Bind<IAzureRepository>().To<BlockBlobRepository>().InSingletonScope();
             kernel.Bind<IAzureServices>().To<AzureService>().InSingletonScope();
-            kernel.Bind<ICloudBlobContainerServices>().To<MockCloudBlobContainerServices>().InSingletonScope();
+            kernel.Bind<ICloudBlobContainerServices>().To<CloudBlobContainerServices>().InSingletonScope();
         }
-    }
+    }
+
 }

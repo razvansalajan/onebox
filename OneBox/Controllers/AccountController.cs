@@ -49,20 +49,33 @@ namespace OneBox_WebServices.Controllers
             return View(GetFiles(filePath));
         }
 
+        public ActionResult CreateNewFolder(string currentPath,  string newFolder)
+        {
+            if (newFolder == null || newFolder == "")
+            {
+                return Content("false");
+            }
+
+            azureServices.CreateNewFolder(currentPath, newFolder);
+
+            return Content("true");
+
+        }
+
         private FileSystemViewModel GetFiles(string filePath)
         {
             FileSystemViewModel fileSystem = new FileSystemViewModel();
             foreach(FileDto item in azureServices.GetFiles(filePath))
             {
                 string fileType = "folder";
-                if (!item.isFolder)
+                if (item.ifFile)
                 {
                     fileType = "file";
                 }
                 fileSystem.fileSystemList.Add(new FileViewModel(item.fullPath, item.name, item.sizeInBytes, fileType));
             }
-            string []folders = OneBox_DataAccess.Utilities.Utility.Split(filePath, '/');
-            for(int i=0; i<folders.Length; ++i)
+            List<string> folders = OneBox_DataAccess.Utilities.Utility.Split(filePath, '/');
+            for(int i=0; i<folders.Count; ++i)
             {
                 fileSystem.pathList.Add(folders[i]);
             }

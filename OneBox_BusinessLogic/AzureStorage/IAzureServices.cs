@@ -12,5 +12,6 @@ namespace OneBox_BusinessLogic.AzureStorage
         void ConfigureServices(string emailAddress);
         string GetContainerName();
         List<FileDto> GetFiles(string filePath);
+        void CreateNewFolder(string currentPath, string newFolderName);
     }
 }

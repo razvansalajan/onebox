@@ -12,5 +12,6 @@ namespace OneBox_DataAccess.Repositories.Azure
         void ConfigureContainer(string containerName);
         string GetContainerName();
         List<FileDto> GetFiles(string filePath);
+        void CreateNewFolder(string currentPath, string newFolderName);
     }
 }

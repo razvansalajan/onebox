@@ -1,24 +1,50 @@
 ﻿@model OneBox_WebServices.ViewModels.FileSystemViewModel
-<div class="panel panel-primary">
-    <div class="panel-heading">
+<!--
+   TODO: the code from listoffiles is the same as here;....
+    done.
+   -->
+<div>
+    @{
+        string currentPath = "";
+    }
+    <ul class="list-group">
         @{
-            string currentPath = "";
+            int deUnde = Model.pathList.Count - 2;
+            int panaUnde = Model.pathList.Count;
+            if (deUnde < 0)
+            {
+                deUnde = 0;
+            }
         }
-        @foreach (string s in Model.pathList)
+        @for (int i = 0; i < panaUnde; ++i)
         {
+            string s = Model.pathList[i];
             currentPath = currentPath + "/" + s;
-            <div class='table_of_files_row' data-href='@currentPath'>
-                @s->
-            </div>
+            if (i == 0)
+            {
+                s = "OneBox";
+            }
+            if (i >= deUnde)
+            {
+                <li class='list-currentpath-item current_path' data-href='@currentPath'>
+                    @s /
+                </li>
+            }
+           
         }
-    </div>
+        <div id="current_path_info" data-current_path='@currentPath'></div>
+    </ul>
+</div>
 
-    <table class="table table-striped">
-        <tr>
-            <th>fullpath</th>
-            <th>name</th>
-            <th>size</th>
-        </tr>
+<div >
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th class="col-md-7">fullpath</th>
+                <th class="col-md-3">name</th>
+                <th class="col-md-3">size</th>
+            </tr>
+        </thead>
         @if (Model.fileSystemList.Count() == 0)
             {
             <tr>
@@ -31,11 +57,13 @@
         {
             foreach (var item in Model.fileSystemList)
             {
-                <tr class='table_of_files_row' data-href='@item.fullPath'>
-                    <td>@item.fullPath</td>
-                    <td>@item.name</td>
-                    <td>@item.sizeInBytes</td>
-
+                <tr class='table_of_files_row' data-href='@item.fullPath' data-filetype='@item.typeFile'>
+                    <!--
+                        TODO : if i put style in a class and set the cursor property does not work (why????    )
+                    -->
+                    <td><span style="cursor:default">@item.fullPath</span> </td>
+                    <td><span style="cursor:default">@item.name</span> </td>
+                    <td><span style="cursor:default">@item.sizeInBytes</span></td>
                 </tr>
             }
         }

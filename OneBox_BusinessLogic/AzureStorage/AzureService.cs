@@ -25,6 +25,11 @@ namespace OneBox_BusinessLogic.AzureStorage
             azureRepository.ConfigureContainer(emailAddress);
         }
 
+        public void CreateNewFolder(string currentPath, string newFolderName)
+        {
+            azureRepository.CreateNewFolder(currentPath, newFolderName);
+        }
+
         public string GetContainerName()
         {
             return azureRepository.GetContainerName();

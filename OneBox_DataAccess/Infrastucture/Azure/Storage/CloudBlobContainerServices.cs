@@ -22,8 +22,10 @@ namespace OneBox_DataAccess.Infrastucture.Azure.Storage
             CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(connectionString);
             CloudBlobClient cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
             cloudBlobContainer = cloudBlobClient.GetContainerReference(containerName);
-            cloudBlobContainer.CreateIfNotExists();
+            cloudBlobContainer.CreateIfNotExists();           
         }
+
+
 
         public string GetContainerName()
         {
@@ -61,6 +63,28 @@ namespace OneBox_DataAccess.Infrastucture.Azure.Storage
             }
             return listBlobsMirror;
 
+        }
+
+        public void CreateNewFolder(string path)
+        {
+            List<string> folders = Utility.Split(path, '/');
+            string newBlob = string.Empty;
+            int deUnde = 0;
+            if (folders[0].Equals(GetContainerName()))
+            {
+                deUnde = 1;
+            }
+            for(int i=deUnde; i<folders.Count; ++i)
+            {
+                string sep = "/";
+                if (i == deUnde)
+                {
+                    sep = "";
+                }
+                newBlob = newBlob + sep + folders[i];
+            }
+            var blob = cloudBlobContainer.GetBlockBlobReference(newBlob);
+            blob.UploadTextAsync("");
         }
     }
 }

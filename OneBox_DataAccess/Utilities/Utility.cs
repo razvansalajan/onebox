@@ -25,21 +25,21 @@ namespace OneBox_DataAccess.Utilities
             absoluteUri = Convention(absoluteUri);
             filePath = Convention(filePath);
             string nextString = "";
-            string[] l1 = Split(absoluteUri, '/');
-            string[] l2 = Split(filePath, '/');
+            List<string> l1 = Split(absoluteUri, '/');
+            List<string> l2 = Split(filePath, '/');
             
-            if (l1.Length <= l2.Length)
+            if (l1.Count <= l2.Count)
             {
                 return nextString;
             }
-            for (int i=0; i<l2.Length; ++i)
+            for (int i=0; i<l2.Count; ++i)
             {
                 if (l1[i] != l2[i])
                 {
                     return nextString;
                 }
             }
-            return l1[l2.Length];
+            return l1[l2.Count];
         }
 
         public static string Convention(string filePath)
@@ -72,26 +72,18 @@ namespace OneBox_DataAccess.Utilities
             return true;
         }
 
-        public static string[] Split(string s, char v)
+        public static List<string> Split(string s, char v)
         {
             s = Convention(s);
-            int cnt = 0;
-            for(int i=0; i<s.Length; ++i)
-            {
-                if (s[i] == v)
-                {
-                    ++cnt;
-                }
-            }
-            string []words = new string[cnt-1];
-            int idx = 0;
+            List<string> words = new List<string>();
+            //string []words = new string[cnt-1];
             string currentString = "";
             for(int i=1; i<s.Length; ++i) {
                 if (s[i]== v)
                 {
-                    words[idx] = currentString;
+                    //words[idx] = currentString;
+                    words.Add(currentString);
                     currentString = "";
-                    ++idx;
                 }
                 else
                 {

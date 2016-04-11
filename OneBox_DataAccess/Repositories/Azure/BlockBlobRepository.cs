@@ -28,6 +28,14 @@ namespace OneBox_DataAccess.Repositories.Azure
             cloudBlobContainerServices.SetupNewContainer(containerName);
         }
 
+        public void CreateNewFolder(string currentPath, string newFolderName)
+        {
+            string path = currentPath + "/" + newFolderName;
+            //TO DO: ar trebuie sa verific daca nu exista.
+            path = Utility.Convention(path);
+            cloudBlobContainerServices.CreateNewFolder(path);
+        }
+
         public string GetContainerName()
         {
             return cloudBlobContainerServices.GetContainerName();

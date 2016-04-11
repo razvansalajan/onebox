@@ -27,7 +27,30 @@
 });
 
 $(document).ready(function ($) {
-    $(document).on("click", ".table_of_files_row", function () {
+    $(document).on("dblclick", ".table_of_files_row", function () {
+        var dataGet = { filePath: $(this).data("href") };
+        var typeFile = $(this).data('filetype');
+        
+        if (typeFile === "file") {
+            return;
+        }
+        $.ajax({
+            type: "GET",
+            url: "/Account/ListOfFiles",
+            data: dataGet,
+            success: function (result) {
+                $("#list_of_files").html(result);
+            },
+            error: function () {
+                alert("Error while invoking the Web API");
+            }
+        });
+    });
+});
+
+
+$(document).ready(function ($) {
+    $(document).on("click", ".current_path", function () {
         var dataGet = { filePath: $(this).data("href") };
         $.ajax({
             type: "GET",
@@ -35,6 +58,50 @@ $(document).ready(function ($) {
             data: dataGet,
             success: function (result) {
                 $("#list_of_files").html(result);
+            },
+            error: function () {
+                alert("Error while invoking the Web API");
+            }
+        });
+    });
+});
+
+
+
+$(document).ready(function ($) {
+    $(document).on("click", ".dropdown_new", function () {
+        var current_path = $("#current_path_info").data('current_path');
+        console.log(current_path);
+    });
+});
+
+
+
+
+$(document).ready(function ($) {
+    $(document).on("click", "#create_new_folder", function () {
+        var new_folder = $("#new_folder_input_field").val();
+        var current_path = $("#current_path_info").data('current_path');
+        var dataGet = { currentPath: current_path, newFolder: new_folder };
+        $.ajax({
+            type: "GET",
+            url: "/Account/CreateNewFolder",
+            data: dataGet,
+            success: function (result) {
+                if (result === "true") {
+                    var dataGet = { filePath: current_path };
+                    $.ajax({
+                        type: "GET",
+                        url: "/Account/ListOfFiles",
+                        data: dataGet,
+                        success: function (result) {
+                            $("#list_of_files").html(result);
+                        },
+                        error: function () {
+                            alert("Error while invoking the Web API");
+                        }
+                    });
+                }
             },
             error: function () {
                 alert("Error while invoking the Web API");

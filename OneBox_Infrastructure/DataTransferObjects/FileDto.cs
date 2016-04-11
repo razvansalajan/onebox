@@ -9,20 +9,20 @@ namespace OneBox_Infrastructure.DataTransferObjects
     public class FileDto
     {        
         public string sizeInBytes { get; set; }
-        public FileDto(string fullPath, string name, bool isFolder)
+        public FileDto(string fullPath, string name, bool ifFile)
         {
             this.fullPath = fullPath;
             this.name = name;
-            this.isFolder = isFolder;
+            this.ifFile = ifFile;
         }
 
-        public FileDto(string fullPath, string name, bool isFolder, string v) : this(fullPath, name, isFolder)
+        public FileDto(string fullPath, string name, bool isFile, string v) : this(fullPath, name, isFile)
         {
             this.sizeInBytes = v;
         }
 
         public string fullPath { get; set; }
         public string name { get; set; }
-        public bool isFolder { get; set; }
+        public bool ifFile { get; set; }
     }
 }
