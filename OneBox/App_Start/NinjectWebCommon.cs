@@ -10,7 +10,7 @@ namespace OneBox_WebServices.App_Start
 
     using Ninject;
     using Ninject.Web.Common;
-
+    using System.Web.Http;
     public static class NinjectWebCommon 
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
@@ -42,6 +42,7 @@ namespace OneBox_WebServices.App_Start
             var kernel = new StandardKernel();
             kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
             kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
+            GlobalConfiguration.Configuration.DependencyResolver = kernel.Get<System.Web.Http.Dependencies.IDependencyResolver>();
             RegisterServices(kernel);
             return kernel;
         }
@@ -52,7 +53,7 @@ namespace OneBox_WebServices.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            System.Web.Mvc.DependencyResolver.SetResolver(new Infrastructure.NinjectDependencyResolver(kernel));
+            System.Web.Mvc.DependencyResolver.SetResolver(new Infrastructure.NinjectDependencyResolver(kernel));           
         }
     }
 }

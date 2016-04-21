@@ -6,6 +6,7 @@ using OneBox_DataAccess.Utilities;
 using OneBox_Infrastructure.DataTransferObjects;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,14 @@ namespace OneBox_DataAccess.Repositories.Azure
             cloudBlobContainerServices = services;
             //ContainerName = containerName;
             //SetUpContainer();
+        }
+
+        public void AddNewFile(string currentPath, string fileName, Stream dataStream)
+        {
+            string path = currentPath + "/" + fileName;
+            //TO DO: ar trebuie sa verific daca nu exista.
+            path = Utility.Convention(path);
+            cloudBlobContainerServices.AddNewFile(path, dataStream);
         }
 
         public void ConfigureContainer(string containerName)
@@ -84,6 +93,11 @@ namespace OneBox_DataAccess.Repositories.Azure
             }
             
             return files;
+        }
+
+        public Stream GetStream(string currentPath)
+        {
+            return cloudBlobContainerServices.GetStream(currentPath);
         }
     }
 }

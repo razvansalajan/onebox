@@ -10,3 +10,17 @@
 .table-of-files-row-item{
     cursor : pointer;
 }
+
+ul.horizontal{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+li{
+    cursor:default;
+}
+
+li.horizontal{
+    display: inline;
+}

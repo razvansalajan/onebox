@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OneBox_Infrastructure.DataTransferObjects;
+using System.IO;
 
 namespace OneBox_BusinessLogic.AzureStorage
 {
@@ -18,6 +19,11 @@ namespace OneBox_BusinessLogic.AzureStorage
         public AzureService(IAzureRepository azureRepo)
         {
             azureRepository = azureRepo;
+        }
+
+        public void AddNewFile(string currentPath, string fileName, Stream dataStream)
+        {
+            azureRepository.AddNewFile( currentPath,  fileName, dataStream);
         }
 
         public void ConfigureServices(string emailAddress)
@@ -38,6 +44,11 @@ namespace OneBox_BusinessLogic.AzureStorage
         public List<FileDto> GetFiles(string filePath)
         {
             return azureRepository.GetFiles(filePath);
+        }
+
+        public Stream GetStream(string currentPath)
+        {
+            return azureRepository.GetStream(currentPath);
         }
     }
 }

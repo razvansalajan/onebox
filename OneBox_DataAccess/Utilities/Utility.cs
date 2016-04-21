@@ -93,5 +93,12 @@ namespace OneBox_DataAccess.Utilities
 
             return words;
         }
+
+        public static string GetFileName(string s)
+        {
+            char v = '/';
+            List<string> words = Split(s, v);
+            return words[words.Count - 1];
+        }
     }
 }

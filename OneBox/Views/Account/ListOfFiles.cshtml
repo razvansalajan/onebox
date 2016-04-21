@@ -29,10 +29,10 @@
                 <li class='list-currentpath-item current_path' data-href='@currentPath'>
                     @s /
                 </li>
-            }
-           
+            } 
         }
         <div id="current_path_info" data-current_path='@currentPath'></div>
+        <div id="current_path_info_selected_file" data-current_path_file='@currentPath'></div>
     </ul>
 </div>
 
@@ -57,7 +57,7 @@
         {
             foreach (var item in Model.fileSystemList)
             {
-                <tr class='table_of_files_row' data-href='@item.fullPath' data-filetype='@item.typeFile'>
+                <tr class='table_of_files_row' data-filename='@item.name' data-href='@item.fullPath' data-filetype='@item.typeFile'>
                     <!--
                         TODO : if i put style in a class and set the cursor property does not work (why????    )
                     -->

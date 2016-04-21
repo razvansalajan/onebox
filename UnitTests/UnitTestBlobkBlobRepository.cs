@@ -5,6 +5,8 @@ using OneBox_DataAccess.Infrastucture.Azure.Storage;
 using System.Collections;
 using OneBox_Infrastructure.DataTransferObjects;
 using System.Collections.Generic;
+using System.IO;
+using OneBox_DataAccess.Utilities.Mocks;
 
 namespace UnitTests
 {
@@ -15,19 +17,25 @@ namespace UnitTests
         public void TestGetFiles()
         {
             IAzureRepository fakeRepo = new BlockBlobRepository(new MockCloudBlobContainerServices());
-            string containerName = "test_container";
+            string containerName = "root";
             fakeRepo.ConfigureContainer(containerName);
+            fakeRepo.CreateNewFolder("root", "poze");
+            fakeRepo.AddNewFile("root/poze", "ceva.jpg", new FileStreamMock(45) );
+            fakeRepo.AddNewFile("root", "ceva.txt", new FileStreamMock(66));
+            fakeRepo.AddNewFile("root/poze/poze2", "ceva2.jpg", new FileStreamMock(5));
             List<FileDto> list = fakeRepo.GetFiles(containerName);
+            Assert.AreEqual(2, list.Count);
 
-            string fullPath_1 = "/" + containerName + "/folder1/";
-            Assert.AreEqual(fullPath_1, list[0].fullPath);
-            string fullPath_2 = "/" + containerName + "/file1.txt/";
-            Assert.AreEqual(fullPath_2,list[1].fullPath);
 
-            list = fakeRepo.GetFiles(containerName + "/folder1");
-            Assert.AreEqual(1, list.Count);
-            Assert.AreEqual("/"+containerName + "/folder1" + "/file1.txt/", list[0].fullPath);
-
+            List<string> expected = new List<string>();
+            expected.Add("ceva.jpg");
+            expected.Add("poze2");
+            list = fakeRepo.GetFiles(containerName + "/poze");
+            Assert.AreEqual(expected.Count,list.Count);
+            for(int i=0; i<list.Count; ++i)
+            {
+                Assert.AreEqual(list[i].name, expected[i]);
+            }
         }
     }
 }

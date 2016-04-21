@@ -10,6 +10,7 @@ using OneBox_WebServices.Infrastructure;
 using OneBox_WebServices.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -24,7 +25,7 @@ namespace OneBox_WebServices.Controllers
     public class AccountController : Controller
     {
         private IAzureServices azureServices;
-        private string defaultPath = "";
+        
         public AccountController(IAzureServices azureServices)
         {
             this.azureServices = azureServices;
@@ -47,6 +48,72 @@ namespace OneBox_WebServices.Controllers
                 filePath = azureServices.GetContainerName();
             }
             return View(GetFiles(filePath));
+        }
+    
+        public ActionResult DownloadFile(string filePath)
+        {
+
+            Stream fileStream = azureServices.GetStream(filePath);            
+            // Buffer to read 10K bytes in chunk:
+            byte[] buffer = new Byte[10000];
+
+            // Length of the file:
+            int length;
+
+            // Total bytes to read:
+            long dataToRead;
+
+            try
+            {
+
+                // Total bytes to read:
+                dataToRead = fileStream.Length;
+                Response.ContentType = "application/octet-stream";
+                Response.AddHeader("Content-Disposition", "attachment; filename=" + Utility.GetFileName(filePath));
+                // Read the bytes.
+                while (dataToRead > 0)
+                {
+                    // Verify that the client is connected.
+                    if (Response.IsClientConnected)
+                    {
+                        // Read the data in buffer.
+                        length = fileStream.Read(buffer, 0, 10000);
+
+                        // Write the data to the current output stream.
+                        Response.OutputStream.Write(buffer, 0, length);
+
+                        // Flush the data to the HTML output.
+                        Response.Flush();
+
+                        buffer = new Byte[10000];
+                        dataToRead = dataToRead - length;
+                    }
+                    else
+                    {
+                        //prevent infinite loop if user disconnects
+                        dataToRead = -1;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Trap the error, if any.
+                Response.Write("Error : " + ex.Message);
+            }
+            finally
+            {
+                if (fileStream != null)
+                {
+                    //Close the file.
+                    fileStream.Close();
+                }
+                Response.Close();
+            }
+
+            //            HttpContext.Response.ContentType = new FileStreamResult(fileStream);
+            
+            string mime = MimeMapping.GetMimeMapping(filePath);
+            return new FileStreamResult(fileStream, mime);
         }
 
         public ActionResult CreateNewFolder(string currentPath,  string newFolder)

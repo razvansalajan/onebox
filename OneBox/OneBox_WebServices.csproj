@@ -33,6 +33,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -124,16 +125,20 @@
       <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.0.0\lib\net45-full\Ninject.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Ninject.Web.Common, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.Web.Common.3.0.0.7\lib\net45-full\Ninject.Web.Common.dll</HintPath>
+    <Reference Include="Ninject.Web.Common, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.3.2.0.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Ninject.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.MVC3.3.0.0.6\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
+    <Reference Include="Ninject.Web.Mvc, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.MVC3.3.2.0.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Web.WebApi, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.WebApi.3.2.4.0\lib\net45-full\Ninject.Web.WebApi.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
@@ -213,14 +218,25 @@
     <Content Include="scripts\bootstrap.min.js" />
     <None Include="Properties\PublishProfiles\onebox.pubxml" />
     <None Include="scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="scripts\GetFiles.js" />
+    <Content Include="scripts\dropzone\basic.css" />
+    <Content Include="scripts\dropzone\basic.min.css" />
+    <Content Include="scripts\dropzone\dropzone-amd-module.js" />
+    <Content Include="scripts\dropzone\dropzone-amd-module.min.js" />
+    <Content Include="scripts\dropzone\dropzone.css" />
+    <Content Include="scripts\dropzone\dropzone.js" />
+    <Content Include="scripts\dropzone\dropzone.min.css" />
+    <Content Include="scripts\dropzone\dropzone.min.js" />
+    <Content Include="scripts\Dropzone_script.js" />
     <Content Include="scripts\jquery-1.10.2.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
     <Content Include="scripts\jquery-2.2.1.js" />
     <Content Include="scripts\jquery-2.2.1.min.js" />
     <Content Include="scripts\modernizr-2.6.2.js" />
     <Content Include="scripts\OneBox_scripts.js" />
+    <Content Include="scripts\resumable.js" />
     <Content Include="scripts\UploadFile.js" />
+    <Content Include="Utilities\from_local_to_publish.txt" />
+    <Content Include="Utilities\from_publish_to_local.txt" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -248,6 +264,7 @@
     <Compile Include="Infrastructure\MyStreamProvider.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\Utility.cs" />
     <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
     <Compile Include="ViewModels\FileSystemViewModel.cs" />
     <Compile Include="ViewModels\FileViewModel.cs" />
@@ -292,6 +309,8 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Account\ListOfFiles.cshtml" />
+    <Content Include="Views\Account\NewFolderDialog.cshtml" />
+    <Content Include="Views\Account\UploadFileDialog.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -303,7 +322,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
     <Folder Include="uploads\" />
-    <Folder Include="Utilities\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OneBox_BusinessLogic\OneBox_BusinessLogic.csproj">
@@ -318,6 +336,9 @@
       <Project>{45f653e0-3bd4-474a-b4b9-ab1dcdb58874}</Project>
       <Name>OneBox_Infrastructure</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

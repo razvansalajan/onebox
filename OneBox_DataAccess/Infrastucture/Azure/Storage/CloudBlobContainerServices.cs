@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace OneBox_DataAccess.Infrastucture.Azure.Storage
 {
@@ -85,6 +86,33 @@ namespace OneBox_DataAccess.Infrastucture.Azure.Storage
             }
             var blob = cloudBlobContainer.GetBlockBlobReference(newBlob);
             blob.UploadTextAsync("");
+        }
+
+        public void AddNewFile(string path, Stream dataStream)
+        {
+            List<string> folders = Utility.Split(path, '/');
+            string newBlob = string.Empty;
+            int deUnde = 0;
+            if (folders[0].Equals(GetContainerName()))
+            {
+                deUnde = 1;
+            }
+            for (int i = deUnde; i < folders.Count; ++i)
+            {
+                string sep = "/";
+                if (i == deUnde)
+                {
+                    sep = "";
+                }
+                newBlob = newBlob + sep + folders[i];
+            }
+            var blob = cloudBlobContainer.GetBlockBlobReference(newBlob);
+            blob.UploadFromStreamAsync(dataStream);
+        }
+
+        public Stream GetStream(string currentPath)
+        {
+            throw new NotImplementedException();
         }
     }
 }

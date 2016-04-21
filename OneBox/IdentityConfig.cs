@@ -40,7 +40,7 @@ namespace OneBox_WebServices
             app.UseGoogleAuthentication(clientId: "531756177323-22mt5oveklsf9f5vpd8fm2r3juuai450.apps.googleusercontent.com", clientSecret: "REAAZjLqSvkuVY3I8g2MXTZn");
             
 
-            System.Console.WriteLine("dada: " + OneBox_DataAccess.Utilities.Utility.GetNextString("/adminyahoocom/testFolder", "/adminyahoocom"));
+            //System.Console.WriteLine("dada: " + OneBox_DataAccess.Utilities.Utility.GetNextString("/adminyahoocom/testFolder", "/adminyahoocom"));
         }
     }
 }

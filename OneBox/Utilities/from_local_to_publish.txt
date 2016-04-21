@@ -1,0 +1,8 @@
+﻿
+    <!--nu uita sa pui parola-->
+  
+    <add name="oneboxdatabase" providerName="System.Data.SqlClient" connectionString="Data Source=tcp:onebox-server.database.windows.net,1433;Initial Catalog=oneboxdatabase;User ID=onebox@onebox-server;Password=d1jKstra1994;MultipleActiveResultSets=True;" />
+    
+    <!--     
+    <add name="oneboxdatabase" providerName="System.Data.SqlClient" connectionString="Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=oneboxdatabase;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;MultipleActiveResultSets=True;" />
+    -->

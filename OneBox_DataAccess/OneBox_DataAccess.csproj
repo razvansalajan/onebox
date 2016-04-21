@@ -127,6 +127,7 @@
     <Compile Include="Repositories\Azure\BlockBlobRepository.cs" />
     <Compile Include="Repositories\Azure\IAzureRepository.cs" />
     <Compile Include="Utilities\EmailService.cs" />
+    <Compile Include="Utilities\Mocks\FileStreamMock.cs" />
     <Compile Include="Utilities\Utility.cs" />
   </ItemGroup>
   <ItemGroup>
