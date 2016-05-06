@@ -18,7 +18,7 @@ namespace OneBox_DataAccess.Utilities
         public const string LocalUsersRoleName = "localregisteredusers";
 
         public const string STORAGEACCOUNTNAME = "oneboxstorage";
-        public const string STORAGEACCOUNTKEY = "gKXXEdoe/AYAE7vBR1KeYiVgd6eo6bhbMpijnak9lfAg/y2T9Yxdtqq6QwkbvEegrciaFwaubP+PLqlVZ0YNjQ==";
+        public const string STORAGEACCOUNTKEY = "srhqodT4jo0wvZbzcZa3XWVM5SLI8Z4lRPGW2EOfUj2O1pREAc1fD+9y2YEVmWkue5NbgUMgw0dD7rInuqS6KQ==";
 
         public static string GetNextString(string absoluteUri, string filePath)
         {
@@ -72,6 +72,21 @@ namespace OneBox_DataAccess.Utilities
             return true;
         }
 
+        public static string IdToDns(int emailToContainerId)
+        {
+            // it should have at least 3 characters
+
+            if (emailToContainerId < 100)
+            {                
+                return emailToContainerId.ToString("000");
+            }
+            else
+            {
+                return emailToContainerId.ToString();
+            }
+            
+        }
+
         public static List<string> Split(string s, char v)
         {
             s = Convention(s);
@@ -99,6 +114,41 @@ namespace OneBox_DataAccess.Utilities
             char v = '/';
             List<string> words = Split(s, v);
             return words[words.Count - 1];
+        }
+
+        public static string GetBlockId(long blockNumber)
+        {
+            string blockId =Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes(string.Format("BlockId{0}",blockNumber.ToString("0000000"))));
+            return blockId;
+        }
+
+
+        /// <summary>
+        /// Get blob name from a file system onebox's path. Which is without the container name.
+        /// and without '/' from the begining/ending of the name.
+        /// </summary>
+        /// <param name="path">the file system onebox's path.</param>
+        /// <param name="containerName">container's name.</param>
+        /// <returns>the internal blob's azure name.</returns>
+        public static string GetBlobName(string path, string containerName)
+        {
+            List<string> folders = Split(path, '/');
+            string newBlob = string.Empty;
+            int deUnde = 0;
+            if (folders[0].Equals(containerName))
+            {
+                deUnde = 1;
+            }
+            for (int i = deUnde; i < folders.Count; ++i)
+            {
+                string sep = "/";
+                if (i == deUnde)
+                {
+                    sep = "";
+                }
+                newBlob = newBlob + sep + folders[i];
+            }
+            return newBlob;
         }
     }
 }

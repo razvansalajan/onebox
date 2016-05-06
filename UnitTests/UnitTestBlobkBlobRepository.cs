@@ -14,9 +14,9 @@ namespace UnitTests
     public class UnitTestBlobkBlobRepository
     {
         [TestMethod]
-        public void TestGetFiles()
+        public void TestGetFiles(IAzureRepository fakeRepo)
         {
-            IAzureRepository fakeRepo = new BlockBlobRepository(new MockCloudBlobContainerServices());
+           // IAzureRepository fakeRepo = new BlockBlobRepository(new MockCloudBlobContainerServices());
             string containerName = "root";
             fakeRepo.ConfigureContainer(containerName);
             fakeRepo.CreateNewFolder("root", "poze");

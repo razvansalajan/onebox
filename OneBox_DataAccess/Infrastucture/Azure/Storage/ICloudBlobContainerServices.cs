@@ -1,20 +1,21 @@
-﻿using OneBox_Infrastructure.DataTransferObjects;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Storage.Blob;
+using OneBox_DataAccess.Infrastucture.Mirrors;
+using System.IO;
 
-namespace OneBox_DataAccess.Repositories.Azure
+namespace OneBox_DataAccess.Infrastucture.Azure.Storage
 {
-    public interface IAzureRepository
+    public interface ICloudBlobContainerServices
     {
-        void ConfigureContainer(string containerName);
         string GetContainerName();
-        List<FileDto> GetFiles(string filePath);
-        void CreateNewFolder(string currentPath, string newFolderName);
-        void AddNewFile(string currentPath, string fileName, Stream dataStream);
+        void SetupNewContainer(string containerName);
+        IEnumerable<ListBlobItemMirror> GetFlatBlobList();
+        void CreateNewFolder(string path);
+        void AddNewFile(string path, Stream dataStream);
         Stream GetStream(string currentPath);
         void AddNewFileChunk(Stream dataStream, long chunkIndex, string blobPath, long totalFileSize);
         void CommitFileChunks(string blobPath, int totalNumberOfChunks);

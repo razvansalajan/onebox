@@ -26,6 +26,16 @@ namespace OneBox_BusinessLogic.AzureStorage
             azureRepository.AddNewFile( currentPath,  fileName, dataStream);
         }
 
+        public void AddNewFileChunk(Stream dataStream, long chunkIndex, string blobPath, long totalFileSize)
+        {
+            azureRepository.AddNewFileChunk(dataStream, chunkIndex, blobPath, totalFileSize);
+        }
+
+        public void CommitFileChunks(string blobPath, int totalNumberOfChunks)
+        {
+            azureRepository.CommitFileChunks(blobPath, totalNumberOfChunks);
+        }
+
         public void ConfigureServices(string emailAddress)
         {
             azureRepository.ConfigureContainer(emailAddress);
@@ -34,6 +44,16 @@ namespace OneBox_BusinessLogic.AzureStorage
         public void CreateNewFolder(string currentPath, string newFolderName)
         {
             azureRepository.CreateNewFolder(currentPath, newFolderName);
+        }
+
+        public long GetBlobRangeToArrayByte(string filePath, byte[] buffer, long currentPosition, int chunkSize)
+        {
+            return azureRepository.GetBlobRangeToArrayByte(filePath, buffer, currentPosition, chunkSize);
+        }
+
+        public long GetBlobSizeInBytes(string filePath)
+        {
+            return azureRepository.GetBlobSizeInBytes(filePath);
         }
 
         public string GetContainerName()

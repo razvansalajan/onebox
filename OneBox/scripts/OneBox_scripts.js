@@ -118,6 +118,7 @@ $(document).ready(function ($) {
     Dropzone.options.dropzoneJsForm = {
         //prevents Dropzone from uploading dropped files immediately
         autoProcessQueue: false,
+        maxFilesize : 5000,
         init: function () {
             var submitButton = document.querySelector("#submit-all");
             var myDropzone = this; //closure
@@ -147,8 +148,9 @@ $(document).ready(function ($) {
         var resumable = new Resumable({
             target: '/api/UploadFile',
             maxFiles: 10,
-            simultaneousUploads: Dropzone.prototype.defaultOptions.parallelUploads,
-            testChunks: true
+            simultaneousUploads: 1,
+            testChunks: true,
+            query : {currentPath: $("#current_path_info").data('current_path')}
         });
 
         if (resumable.support) {
@@ -159,6 +161,7 @@ $(document).ready(function ($) {
 
             resumable.on('fileAdded', function (file) {
                 console.log("din reusable upload starts or something");
+                
                 resumable.upload();
             });
 

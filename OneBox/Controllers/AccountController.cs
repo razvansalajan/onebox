@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using OneBox_BusinessLogic.AzureStorage;
+using OneBox_BusinessLogic.Providers.IProviders;
 using OneBox_DataAccess.Domain;
 using OneBox_DataAccess.Infrastucture;
 using OneBox_DataAccess.Utilities;
@@ -25,11 +26,12 @@ namespace OneBox_WebServices.Controllers
     public class AccountController : Controller
     {
         private IAzureServices azureServices;
+        private IEmailContainerProvider emailContainerProvider;
         
-        public AccountController(IAzureServices azureServices)
+        public AccountController(IAzureServices azureServices, IEmailContainerProvider emailContainerProvider)
         {
             this.azureServices = azureServices;
-            
+            this.emailContainerProvider = emailContainerProvider;
         }
 
         public PartialViewResult ListOfFiles(string filePath)
@@ -50,24 +52,23 @@ namespace OneBox_WebServices.Controllers
             return View(GetFiles(filePath));
         }
     
-        public ActionResult DownloadFile(string filePath)
+        public void DownloadFile(string filePath)
         {
-
-            Stream fileStream = azureServices.GetStream(filePath);            
+            //Stream fileStream = azureServices.GetStream(filePath);
+            //fileStream.Position = 0;    
             // Buffer to read 10K bytes in chunk:
-            byte[] buffer = new Byte[10000];
+            int chunkSize = 1024 * 1024;
+            byte[] buffer = new Byte[chunkSize];
 
             // Length of the file:
-            int length;
+            long totalLength = azureServices.GetBlobSizeInBytes(filePath);
 
             // Total bytes to read:
-            long dataToRead;
-
+            long dataToRead = totalLength;
+            long currentPosition = 0;
+            
             try
             {
-
-                // Total bytes to read:
-                dataToRead = fileStream.Length;
                 Response.ContentType = "application/octet-stream";
                 Response.AddHeader("Content-Disposition", "attachment; filename=" + Utility.GetFileName(filePath));
                 // Read the bytes.
@@ -77,16 +78,17 @@ namespace OneBox_WebServices.Controllers
                     if (Response.IsClientConnected)
                     {
                         // Read the data in buffer.
-                        length = fileStream.Read(buffer, 0, 10000);
-
+                        //length = fileStream.Read(buffer, 0, 10000);
+                        long readLength = azureServices.GetBlobRangeToArrayByte(filePath, buffer, currentPosition, chunkSize);
+                        currentPosition += readLength;
                         // Write the data to the current output stream.
-                        Response.OutputStream.Write(buffer, 0, length);
+                        Response.OutputStream.Write(buffer, 0, (int)readLength);
 
                         // Flush the data to the HTML output.
                         Response.Flush();
 
-                        buffer = new Byte[10000];
-                        dataToRead = dataToRead - length;
+                        buffer = new Byte[chunkSize];
+                        dataToRead = dataToRead - readLength;
                     }
                     else
                     {
@@ -102,18 +104,19 @@ namespace OneBox_WebServices.Controllers
             }
             finally
             {
+                /*
                 if (fileStream != null)
                 {
                     //Close the file.
                     fileStream.Close();
-                }
+                }*/
                 Response.Close();
             }
-
+        
             //            HttpContext.Response.ContentType = new FileStreamResult(fileStream);
-            
-            string mime = MimeMapping.GetMimeMapping(filePath);
-            return new FileStreamResult(fileStream, mime);
+
+            //string mime = MimeMapping.GetMimeMapping(filePath);
+            //return new FileStreamResult(fileStream, mime);          
         }
 
         public ActionResult CreateNewFolder(string currentPath,  string newFolder)
@@ -258,6 +261,7 @@ namespace OneBox_WebServices.Controllers
         {
             // TODO : ceva erori pe aici ?
             //AppUser user = UserManager.FindById(User.Identity.GetUserId());
+            emailContainerProvider.AddEmail(email);
             azureServices.ConfigureServices(email);
             //defaultPath = "/" + azureServices.GetContainerName();
         }

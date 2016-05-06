@@ -23,7 +23,12 @@ namespace OneBox_DataAccess.DatabaseContexts
         {
             return new ApplicationDbContext();
         }
+        public DbSet<StorageAccount> StorageAccounts { get; set; }
+        public DbSet<SharedBlob> SharedBlobs { get; set; }
+        public DbSet<EmailToContainer> EmailToContainers { get; set; }
     }
+
+
     public class IdentityDbInit
  : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
     {
@@ -66,6 +71,9 @@ namespace OneBox_DataAccess.DatabaseContexts
             {
                 userMgr.AddToRole(user.Id, roleName);
             }
+
+
+
         }
     }
 }

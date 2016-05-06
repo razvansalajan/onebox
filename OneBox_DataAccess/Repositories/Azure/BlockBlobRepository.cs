@@ -32,6 +32,18 @@ namespace OneBox_DataAccess.Repositories.Azure
             cloudBlobContainerServices.AddNewFile(path, dataStream);
         }
 
+        public void AddNewFileChunk(Stream dataStream, long chunkIndex, string blobPath, long totalFileSize)
+        {
+            blobPath = Utility.Convention(blobPath);
+            cloudBlobContainerServices.AddNewFileChunk(dataStream, chunkIndex, blobPath, totalFileSize);
+        }
+
+        public void CommitFileChunks(string blobPath, int totalNumberOfChunks)
+        {
+            blobPath = Utility.Convention(blobPath);
+            cloudBlobContainerServices.CommitFileChunks(blobPath, totalNumberOfChunks);
+        }
+
         public void ConfigureContainer(string containerName)
         {
             cloudBlobContainerServices.SetupNewContainer(containerName);
@@ -43,6 +55,18 @@ namespace OneBox_DataAccess.Repositories.Azure
             //TO DO: ar trebuie sa verific daca nu exista.
             path = Utility.Convention(path);
             cloudBlobContainerServices.CreateNewFolder(path);
+        }
+
+        public long GetBlobRangeToArrayByte(string filePath, byte[] buffer, long currentPosition, int chunkSize)
+        {
+            filePath = Utility.Convention(filePath);
+            return cloudBlobContainerServices.GetBlobRangeToArrayByte(filePath, buffer, currentPosition, chunkSize);
+        }
+
+        public long GetBlobSizeInBytes(string filePath)
+        {
+            filePath = Utility.Convention(filePath);
+            return cloudBlobContainerServices.GetBlobSizeInBytes(filePath);
         }
 
         public string GetContainerName()
@@ -97,6 +121,7 @@ namespace OneBox_DataAccess.Repositories.Azure
 
         public Stream GetStream(string currentPath)
         {
+            currentPath = Utility.Convention(currentPath);
             return cloudBlobContainerServices.GetStream(currentPath);
         }
     }

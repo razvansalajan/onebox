@@ -7,7 +7,7 @@ namespace OneBox_WebServices.Utilities
 {
     public class Utility
     {
-        public const DeployState deployState = DeployState.local;
+        public const DeployState deployState = DeployState.azure;
 
         public static bool IsLocal()
         {

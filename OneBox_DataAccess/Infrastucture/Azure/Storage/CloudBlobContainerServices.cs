@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using OneBox_DataAccess.Repositories.Database.Interfaces;
 
 namespace OneBox_DataAccess.Infrastucture.Azure.Storage
 {
@@ -15,6 +16,11 @@ namespace OneBox_DataAccess.Infrastucture.Azure.Storage
     {
         private string containerName;
         private CloudBlobContainer cloudBlobContainer;
+        private IEmailToContainerRepository emailToContainerRepo;
+        public CloudBlobContainerServices(IEmailToContainerRepository emailTo) 
+        {
+            emailToContainerRepo = emailTo;
+        }
 
         private void SetUpContainer()
         {
@@ -26,18 +32,27 @@ namespace OneBox_DataAccess.Infrastucture.Azure.Storage
             cloudBlobContainer.CreateIfNotExists();           
         }
 
-
-
         public string GetContainerName()
         {
-            return containerName;
+            return containerName; 
         }
 
-        public void SetupNewContainer(string containerName)
+        public void SetupNewContainer(string containerName )
         {
             // TODO : create a table in database with email - > id
             // the contaner should be an id instead of the email (email has illegal charchaters).
             this.containerName = "";
+            var item = emailToContainerRepo.Get(x => x.Email.Equals(containerName));
+            if (item == null){
+                // something is wrong.
+                this.containerName = "somethingiswrong";
+                // TODO : create logger.
+            }
+            else
+            {
+                this.containerName = Utility.IdToDns(item.EmailToContainerId);
+            }
+            /*
             foreach (char c in containerName)
             {
                 if ((c < 'a' || c > 'z') && c != '-' && (c < '0' || c > '9'))
@@ -49,7 +64,7 @@ namespace OneBox_DataAccess.Infrastucture.Azure.Storage
                     this.containerName += c;
                 }
             }
-
+            */
             SetUpContainer();
         }
 
@@ -68,51 +83,75 @@ namespace OneBox_DataAccess.Infrastucture.Azure.Storage
 
         public void CreateNewFolder(string path)
         {
-            List<string> folders = Utility.Split(path, '/');
-            string newBlob = string.Empty;
-            int deUnde = 0;
-            if (folders[0].Equals(GetContainerName()))
-            {
-                deUnde = 1;
-            }
-            for(int i=deUnde; i<folders.Count; ++i)
-            {
-                string sep = "/";
-                if (i == deUnde)
-                {
-                    sep = "";
-                }
-                newBlob = newBlob + sep + folders[i];
-            }
+            string newBlob = Utility.GetBlobName(path, GetContainerName());
             var blob = cloudBlobContainer.GetBlockBlobReference(newBlob);
             blob.UploadTextAsync("");
         }
 
         public void AddNewFile(string path, Stream dataStream)
         {
-            List<string> folders = Utility.Split(path, '/');
-            string newBlob = string.Empty;
-            int deUnde = 0;
-            if (folders[0].Equals(GetContainerName()))
-            {
-                deUnde = 1;
-            }
-            for (int i = deUnde; i < folders.Count; ++i)
-            {
-                string sep = "/";
-                if (i == deUnde)
-                {
-                    sep = "";
-                }
-                newBlob = newBlob + sep + folders[i];
-            }
+            string newBlob = Utility.GetBlobName(path, GetContainerName());
             var blob = cloudBlobContainer.GetBlockBlobReference(newBlob);
             blob.UploadFromStreamAsync(dataStream);
         }
 
         public Stream GetStream(string currentPath)
         {
-            throw new NotImplementedException();
+            string blobName = Utility.GetBlobName(currentPath, GetContainerName());
+            var blob = cloudBlobContainer.GetBlockBlobReference(blobName);
+            MemoryStream stream = new MemoryStream();
+            blob.DownloadToStream(stream);
+            return stream;
+        }
+
+        public void AddNewFileChunk(Stream dataStream, long chunkIndex, string blobPath, long totalFileSize)
+        {
+            string newBlob = Utility.GetBlobName(blobPath, GetContainerName());
+
+            var blob = cloudBlobContainer.GetBlockBlobReference(newBlob);
+            string blockId = Utility.GetBlockId(chunkIndex);
+            int chunkSize = (int)dataStream.Length;
+            byte[] bytes = new byte[chunkSize];
+            dataStream.Read(bytes, 0, chunkSize);
+            //string blockHash = GetMD5HashFromStream(bytes); i will do it later 
+            // it used in order to verifiy if there were some loses during the transport of the chunk.
+            blob.PutBlock(blockId, new MemoryStream(bytes), null);
+        }
+
+        public void CommitFileChunks(string blobPath, int totalNumberOfChunks)
+        {
+            string newBlob = Utility.GetBlobName(blobPath, GetContainerName());
+            var blob = cloudBlobContainer.GetBlockBlobReference(newBlob);
+            List<string> blockIDs = new List<string>();
+            for (int i = 1; i <= totalNumberOfChunks; ++i)
+            {
+                string blobId = Utility.GetBlockId(i);
+                blockIDs.Add(blobId);
+            }
+            blob.PutBlockList(blockIDs);
+        }
+
+        public long GetBlobSizeInBytes(string filePath)
+        {
+            string blobName = Utility.GetBlobName(filePath, GetContainerName());
+            CloudBlockBlob blob = (CloudBlockBlob)cloudBlobContainer.GetBlockBlobReference(blobName);
+            //futu-i mortii masii!!!!!!!!!
+            blob.FetchAttributes();
+            return blob.Properties.Length;
+        }
+
+        public long GetBlobRangeToArrayByte(string filePath, byte[] buffer, long currentPosition, int chunkSize)
+        {
+            string blobName = Utility.GetBlobName(filePath, GetContainerName());
+            var blob = cloudBlobContainer.GetBlobReference(blobName);
+            long blobSize = GetBlobSizeInBytes(filePath);
+            long readBytes = blobSize - currentPosition; // the remained bytes to read;
+            if (readBytes > chunkSize)
+            {
+                readBytes = chunkSize;
+            }          
+            blob.DownloadRangeToByteArray(buffer, 0, currentPosition, readBytes);
+            return readBytes;
         }
     }
 }

@@ -1,7 +1,11 @@
 ﻿using Ninject;
 using OneBox_BusinessLogic.AzureStorage;
+using OneBox_BusinessLogic.Providers;
+using OneBox_BusinessLogic.Providers.IProviders;
 using OneBox_DataAccess.Infrastucture.Azure.Storage;
 using OneBox_DataAccess.Repositories.Azure;
+using OneBox_DataAccess.Repositories.Database;
+using OneBox_DataAccess.Repositories.Database.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +34,7 @@ namespace OneBox_WebServices.Infrastructure
         }
         private void AddBindings()
         {
+            ///TODO: Insingletonscope or  
             kernel.Bind<IAzureRepository>().To<BlockBlobRepository>().InSingletonScope();
             kernel.Bind<IAzureServices>().To<AzureService>().InSingletonScope();
             if (Utilities.Utility.IsLocal())
@@ -39,6 +44,12 @@ namespace OneBox_WebServices.Infrastructure
             else {
                 kernel.Bind<ICloudBlobContainerServices>().To<CloudBlobContainerServices>().InSingletonScope();
             }
+            kernel.Bind<IEmailContainerProvider>().To<EmailContainerProvider>().InSingletonScope();
+            kernel.Bind<IEmailToContainerRepository>().To<EmailToContainerRepository>().InSingletonScope();
+            kernel.Bind<ISharedBlobRepository>().To<SharedBlobRepository>().InSingletonScope();
+            kernel.Bind<IStorageAccountRepository>().To<StorageAccountRepository>().InSingletonScope();
+            
+
         }
     }
 

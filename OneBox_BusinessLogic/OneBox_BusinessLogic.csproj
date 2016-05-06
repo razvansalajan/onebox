@@ -71,6 +71,8 @@
     <Compile Include="AzureStorage\AzureService.cs" />
     <Compile Include="AzureStorage\IAzureServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\EmailContainerProvider.cs" />
+    <Compile Include="Utilities\IEmailContainerProvider.cs" />
     <Compile Include="Utilities\Config.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +87,9 @@
       <Project>{45f653e0-3bd4-474a-b4b9-ab1dcdb58874}</Project>
       <Name>OneBox_Infrastructure</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Providers\IProviders\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
