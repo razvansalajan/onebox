@@ -5,7 +5,10 @@
         <li class="horizontal" data-toggle="modal" data-target="#new-folder-modal">folder </li>
         <li class="horizontal" data-toggle="modal" data-target="#upload-file-modal">upload </li>
         <li id="download-button" class="horizontal">download</li>
-        </ul>
+        <li class="horizontal" data-toggle="modal" data-target="#rename-file-modal">rename </li>
+        <li id="delete-button" class="horizontal">delete</li>
+        <li id="move-menu-button"class="horizontal" data-toggle="modal" data-target="#move-file-modal">move </li>
+   </ul>
 </div>
 <!-- Modal -->
 <div id="new-folder-modal" class="modal fade" role="dialog">
@@ -16,6 +19,12 @@
     @Html.Partial("UploadFileDialog");
 </div>
 
+<div id="rename-file-modal" class="modal fade" role="dialog">
+    @Html.Partial("RenameFileDialog");
+</div>
+<div id="move-file-modal" class="modal fade" role="dialog">
+    @Html.Partial("MoveFileDialog");
+</div>
 
 <div id="list_of_files">
     <!--

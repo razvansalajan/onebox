@@ -11,9 +11,10 @@ namespace OneBox_DataAccess.Infrastucture.Azure.Storage
 {
     public interface ICloudBlobContainerServices
     {
-        string GetContainerName();
+        string GetContainerName(string emailAddress);
         void SetupNewContainer(string containerName);
-        IEnumerable<ListBlobItemMirror> GetFlatBlobList();
+        IEnumerable<ListBlobItemMirror> GetFlatBlobList(string path);
+        void SetUpContainer(string path);
         void CreateNewFolder(string path);
         void AddNewFile(string path, Stream dataStream);
         Stream GetStream(string currentPath);
@@ -21,5 +22,6 @@ namespace OneBox_DataAccess.Infrastucture.Azure.Storage
         void CommitFileChunks(string blobPath, int totalNumberOfChunks);
         long GetBlobSizeInBytes(string filePath);
         long GetBlobRangeToArrayByte(string filePath, byte[] buffer, long currentPosition, int chunkSize);
+        void DeleteBlob(string fullAzureBlobPath);
     }
 }

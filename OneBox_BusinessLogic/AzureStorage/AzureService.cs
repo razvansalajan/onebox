@@ -46,6 +46,11 @@ namespace OneBox_BusinessLogic.AzureStorage
             azureRepository.CreateNewFolder(currentPath, newFolderName);
         }
 
+        public void DeleteFile(string pathSelectedItem)
+        {
+            azureRepository.DeleteBlob(pathSelectedItem);
+        }
+
         public long GetBlobRangeToArrayByte(string filePath, byte[] buffer, long currentPosition, int chunkSize)
         {
             return azureRepository.GetBlobRangeToArrayByte(filePath, buffer, currentPosition, chunkSize);
@@ -56,9 +61,9 @@ namespace OneBox_BusinessLogic.AzureStorage
             return azureRepository.GetBlobSizeInBytes(filePath);
         }
 
-        public string GetContainerName()
+        public string GetContainerName(string emailAddress)
         {
-            return azureRepository.GetContainerName();
+            return azureRepository.GetContainerName(emailAddress);
         }
 
         public List<FileDto> GetFiles(string filePath)
@@ -69,6 +74,14 @@ namespace OneBox_BusinessLogic.AzureStorage
         public Stream GetStream(string currentPath)
         {
             return azureRepository.GetStream(currentPath);
+        }
+
+        public void RenameFile(string currentFolderPath, string currentSelectedItemPath, string newNameSelectedItem) { 
+            azureRepository.RenameBlob(currentFolderPath, currentSelectedItemPath, newNameSelectedItem);
+        }
+        public void MoveItemToFolder(string selectedItemPathSource, string selecteFolderPathDestination)
+        {
+            azureRepository.MoveItemToFolder(selectedItemPathSource, selecteFolderPathDestination);
         }
     }
 }

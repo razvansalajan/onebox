@@ -42,6 +42,29 @@ namespace OneBox_DataAccess.Utilities
             return l1[l2.Count];
         }
 
+        public static string ChangePrefix(string s, string newPrefix, string oldPrefix)
+        {
+            //A/B/C, A/newB, A/B -> A/newB/C
+            //A/B/C, A/D/T/R/U, A/B -> A/D/T/R/U/C 
+            s = Utility.Convention(s);
+            newPrefix = Utility.Convention(newPrefix);
+            oldPrefix = Convention(oldPrefix);
+            List<string> sWords = Split(s, '/');
+            List<string> newPrefixWords = Split(newPrefix, '/');
+            List<string> oldPrefixWords = Split(oldPrefix, '/');
+            string newS = "";
+            foreach(char c in newPrefix)
+            {
+                newS += c;
+            }
+            for(int i=oldPrefixWords.Count; i<sWords.Count; ++i)
+            {
+                newS += sWords[i] + "/";
+            }
+            return newS;
+
+        }
+
         public static string Convention(string filePath)
         {
             string newString = "";
@@ -59,11 +82,16 @@ namespace OneBox_DataAccess.Utilities
             return newString;
         }
 
-        internal static bool IsFolder(string s)
+        /// <summary>
+        /// Check whether or not for a given path is a folder.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static bool IsFolder(string path)
         {
-            for (int i = 0; i < s.Length; ++i)
+            for (int i = 0; i < path.Length; ++i)
             {
-                if (s[i] == '.')
+                if (path[i] == '.')
                 {
                     return false;
                 }
@@ -109,11 +137,42 @@ namespace OneBox_DataAccess.Utilities
             return words;
         }
 
+        /// <summary>
+        /// Get the last item from a path of the form : /""/""/""|(or).""/;
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string GetLastItem(string path)
+        {
+            path = Utility.Convention(path);
+            List<string> list = Split(path, '/');
+            return list[list.Count - 1];
+        }
+
         public static string GetFileName(string s)
         {
             char v = '/';
             List<string> words = Split(s, v);
             return words[words.Count - 1];
+        }
+
+        /// <summary>
+        /// Get the "folder path" of a given path. Get the path without the last item.
+        /// </summary>
+        /// <param name="path">the given path.</param>
+        /// <returns>the "folder path". It respects convection.</returns>
+        public static string GetFolderPath(string path)
+        {
+            path = Utility.Convention(path);
+            string ans = "";
+            List<string> list = Split(path, '/');
+            for(int i=0; i<list.Count-1; ++i)
+            {
+                ans += list[i] + "/";
+            }
+            ans = Utility.Convention(ans);
+            return ans;
+
         }
 
         public static string GetBlockId(long blockNumber)
@@ -130,15 +189,12 @@ namespace OneBox_DataAccess.Utilities
         /// <param name="path">the file system onebox's path.</param>
         /// <param name="containerName">container's name.</param>
         /// <returns>the internal blob's azure name.</returns>
-        public static string GetBlobName(string path, string containerName)
+        public static string GetBlobName(string path)
         {
             List<string> folders = Split(path, '/');
             string newBlob = string.Empty;
-            int deUnde = 0;
-            if (folders[0].Equals(containerName))
-            {
-                deUnde = 1;
-            }
+            int deUnde = 1;
+            
             for (int i = deUnde; i < folders.Count; ++i)
             {
                 string sep = "/";
@@ -149,6 +205,52 @@ namespace OneBox_DataAccess.Utilities
                 newBlob = newBlob + sep + folders[i];
             }
             return newBlob;
+        }
+
+        /// <summary>
+        /// Get the extension from the given filename.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static string GetExtention(string fileName)
+        {
+            string s = "";
+            bool seenDot = false;
+            foreach(char c in fileName)
+            {
+                if (c == '.')
+                {
+                    seenDot = true;
+                    s += ".";
+                }
+                else
+                {
+                    if (seenDot)
+                    {
+                        s += c;
+                    }
+                }
+            }
+            return s;
+        }
+
+        /// <summary>
+        /// Get the filename without the '.'. the filename is without the path. 
+        /// </summary>
+        /// <param name="fileName">the given fileName</param>
+        /// <returns></returns>
+        public static string GetFileNameWithoutDot(string fileName)
+        {
+            string s = "";
+            foreach(char c in fileName)
+            {
+                if (c == '.')
+                {
+                    break;
+                }
+                s += c;
+            }
+            return s;
         }
     }
 }

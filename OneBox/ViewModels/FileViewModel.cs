@@ -11,6 +11,14 @@ namespace OneBox_WebServices.ViewModels
         public string name { get; set; }
         public string typeFile { get; set; }
         public string sizeInBytes { get; set; }
+        public bool isFolder()
+        {
+            if (typeFile == "folder")
+            {
+                return true;
+            }
+            return false;
+        }
         public FileViewModel(string fullPath, string name, string sizeInBytes, string typeFile)
         {
             this.fullPath = fullPath;

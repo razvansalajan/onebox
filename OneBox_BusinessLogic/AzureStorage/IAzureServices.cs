@@ -11,7 +11,7 @@ namespace OneBox_BusinessLogic.AzureStorage
     public interface IAzureServices
     {
         void ConfigureServices(string emailAddress);
-        string GetContainerName();
+        string GetContainerName(string emailAddress);
         List<FileDto> GetFiles(string filePath);
         void CreateNewFolder(string currentPath, string newFolderName);
         void AddNewFile(string currentPath, string fileName, Stream dataStream);
@@ -20,5 +20,8 @@ namespace OneBox_BusinessLogic.AzureStorage
         void CommitFileChunks(string blobPath, int totalNumberOfChunks);
         long GetBlobSizeInBytes(string filePath);
         long GetBlobRangeToArrayByte(string filePath, byte[] buffer, long currentPosition, int chunkSize);
+        void RenameFile(string currentFolderPath, string currentSelectedItemPath, string newNameSelectedItem);
+        void DeleteFile(string pathSelectedItem);
+        void MoveItemToFolder(string selectedItemPathSource, string selecteFolderPathDestination);
     }
 }

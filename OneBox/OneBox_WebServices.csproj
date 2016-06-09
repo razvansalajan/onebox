@@ -204,10 +204,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\32px.png" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\jstree-style.css" />
+    <Content Include="Content\jstree-style.min.css" />
     <Content Include="Content\onebox.css" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -231,6 +234,8 @@
     <Content Include="scripts\jquery-1.10.2.min.js" />
     <Content Include="scripts\jquery-2.2.1.js" />
     <Content Include="scripts\jquery-2.2.1.min.js" />
+    <Content Include="scripts\jstree.js" />
+    <Content Include="scripts\jstree.min.js" />
     <Content Include="scripts\modernizr-2.6.2.js" />
     <Content Include="scripts\OneBox_scripts.js" />
     <Content Include="scripts\resumable.js" />
@@ -273,6 +278,7 @@
     <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="ViewModels\RoleEditViewModel.cs" />
     <Compile Include="ViewModels\RoleModificationViewModel.cs" />
+    <Compile Include="ViewModels\TreeViewFileViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -311,6 +317,8 @@
     <Content Include="Views\Account\ListOfFiles.cshtml" />
     <Content Include="Views\Account\NewFolderDialog.cshtml" />
     <Content Include="Views\Account\UploadFileDialog.cshtml" />
+    <Content Include="Views\Account\RenameFileDialog.cshtml" />
+    <Content Include="Views\Account\MoveFileDialog.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

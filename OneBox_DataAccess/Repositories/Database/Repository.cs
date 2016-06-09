@@ -68,10 +68,9 @@ namespace OneBox_DataAccess.Repositories.Database
         {
             Context.SaveChanges();
         }
-        public void Remove(T entity)
+        public void Remove(Expression<Func<T, bool>> predicate)
         {
-            DbSet dbSet = Context.Set<T>();
-            dbSet.Remove(entity);
+            DbSet.RemoveRange(DbSet.Where(predicate));
             SaveChanges();
         }
 

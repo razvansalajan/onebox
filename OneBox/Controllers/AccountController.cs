@@ -17,6 +17,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace OneBox_WebServices.Controllers
@@ -47,11 +48,18 @@ namespace OneBox_WebServices.Controllers
         {
             if (filePath == "")
             {
-                filePath = azureServices.GetContainerName();
+                AppUser user = GetAppUserFromIdentityUser();
+                filePath = azureServices.GetContainerName(user.Email);
             }
             return View(GetFiles(filePath));
         }
-    
+
+        private AppUser GetAppUserFromIdentityUser()
+        {
+            AppUser user = UserManager.FindById(User.Identity.GetUserId());
+            return user;
+        }
+
         public void DownloadFile(string filePath)
         {
             //Stream fileStream = azureServices.GetStream(filePath);
@@ -130,6 +138,87 @@ namespace OneBox_WebServices.Controllers
 
             return Content("true");
 
+        }
+
+        public ActionResult MoveItem(string id, string root)
+        {
+            if (root.Equals("1"))
+            {
+                // the init call 
+                // return the root folder.
+                TreeViewFileViewModel rootNode = new TreeViewFileViewModel() {
+                    data = new DataTreeViewFileViewModel() { pathOfTheFile = id },
+                    children = true,
+                    text = "Onebox"
+                };
+                return Json(rootNode, JsonRequestBehavior.AllowGet);
+            }
+            FileSystemViewModel files = GetFiles(id);
+            int ceva = 0;
+            for (int i = 0; i < files.fileSystemList.Count; ++i)
+            {
+                if (!files.fileSystemList[i].isFolder())
+                {
+                    // the files should not be displayed in the tree view.
+                    continue;
+                }
+                ++ceva;
+            }
+
+            TreeViewFileViewModel[]items = new TreeViewFileViewModel[ceva];
+            int idx = 0;
+            for(int i=0; i<files.fileSystemList.Count; ++i)
+            {
+                if (!files.fileSystemList[i].isFolder())
+                {
+                    // the files should not be displayed in the tree view.
+                    continue;
+                }
+                items[idx] = new TreeViewFileViewModel();
+                items[idx].data = new DataTreeViewFileViewModel();
+                items[idx].data.pathOfTheFile = files.fileSystemList[i].fullPath;
+                items[idx].children = files.fileSystemList[i].isFolder();
+                items[idx].text = files.fileSystemList[i].name;
+                ++idx;
+            }
+            return Json( items, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult DeleteItem(string currentPathSelectedItem)
+        {
+            if (currentPathSelectedItem == null || currentPathSelectedItem == "")
+            {
+                return (Content("false"));
+            }
+            azureServices.DeleteFile(currentPathSelectedItem);
+            return Content("true");
+        }
+
+        public ActionResult MoveItemToFolder(string selectedFolderToMove, string currentFolderDestination)
+        {
+            if (selectedFolderToMove == null || selectedFolderToMove == "")
+            {
+                return (Content("false"));
+            }
+            if (currentFolderDestination == null || currentFolderDestination == "")
+            {
+                return (Content("false"));
+            }
+
+            azureServices.MoveItemToFolder(selectedFolderToMove, currentFolderDestination);
+
+            return Content("true");
+        }
+
+        public ActionResult RenameItem(string currentFolderPath, string currentPathSelectedItem, string newSelectedItemName)
+        {
+            if (newSelectedItemName == null || newSelectedItemName == "")
+            {
+                return Content("false");
+            }
+            azureServices.RenameFile(currentFolderPath, currentPathSelectedItem, newSelectedItemName);
+
+            return Content("true");
         }
 
         private FileSystemViewModel GetFiles(string filePath)
@@ -285,7 +374,7 @@ namespace OneBox_WebServices.Controllers
             info.Add("User", GetIdentityUser().Name);
             info.Add("Authentificated", GetIdentityUser().IsAuthenticated);
             info.Add("Authnetification type", GetIdentityUser().AuthenticationType);
-            info.Add("container name:", azureServices.GetContainerName());
+            info.Add("container name:", azureServices.GetContainerName(GetAppUserFromIdentityUser().Email));
             var id = GetIdentityUser().GetUserId();
 
             var user = UserManager.FindById(id);

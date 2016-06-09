@@ -46,7 +46,7 @@ namespace OneBox_DataAccess.Repositories.Database.Interfaces
         /// <summary>
         /// Remove objects from database by specified filter expression.
         /// </summary>
-        void Remove(T entity);
+        void Remove(Expression<Func<T, bool>> predicate);
 
         ///// <summary>
         ///// Update object changes and save to database.

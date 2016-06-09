@@ -11,6 +11,10 @@
     cursor : pointer;
 }
 
+tr.highlighted td{
+    background: #F2F2F2;
+}
+
 ul.horizontal{
     list-style: none;
     margin: 0;
@@ -24,3 +28,5 @@ li{
 li.horizontal{
     display: inline;
 }
+
+

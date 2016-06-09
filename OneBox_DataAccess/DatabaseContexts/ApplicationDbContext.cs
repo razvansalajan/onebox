@@ -26,6 +26,7 @@ namespace OneBox_DataAccess.DatabaseContexts
         public DbSet<StorageAccount> StorageAccounts { get; set; }
         public DbSet<SharedBlob> SharedBlobs { get; set; }
         public DbSet<EmailToContainer> EmailToContainers { get; set; }
+        public DbSet<VirtualBlob> VirtualBlobs { get; set; }
     }
 
 

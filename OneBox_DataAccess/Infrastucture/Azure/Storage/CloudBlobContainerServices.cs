@@ -22,8 +22,9 @@ namespace OneBox_DataAccess.Infrastucture.Azure.Storage
             emailToContainerRepo = emailTo;
         }
 
-        private void SetUpContainer()
+        public void SetUpContainer(string containerName)
         {
+            this.containerName = containerName;
             string connectionString = string.Format(@"DefaultEndpointsProtocol=http;AccountName={0};AccountKey={1}",
             Utility.STORAGEACCOUNTNAME, Utility.STORAGEACCOUNTKEY);
             CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(connectionString);
@@ -32,15 +33,33 @@ namespace OneBox_DataAccess.Infrastucture.Azure.Storage
             cloudBlobContainer.CreateIfNotExists();           
         }
 
-        public string GetContainerName()
+        public string GetContainerName(string email)
         {
-            return containerName; 
+            string containerName = GetContainerNameFromEmail(email);
+            return containerName;
+        }
+
+
+        private string GetContainerNameFromEmail(string email)
+        {
+            var item = emailToContainerRepo.Get(x => x.Email.Equals(email));
+            if (item == null)
+            {
+                // something is wrong.
+                return "somethingiswrong";
+                // TODO : create logger.
+            }
+            else
+            {
+                return Utilities.Utility.IdToDns(item.EmailToContainerId);
+            }
         }
 
         public void SetupNewContainer(string containerName )
         {
             // TODO : create a table in database with email - > id
             // the contaner should be an id instead of the email (email has illegal charchaters).
+            // done that.
             this.containerName = "";
             var item = emailToContainerRepo.Get(x => x.Email.Equals(containerName));
             if (item == null){
@@ -52,23 +71,10 @@ namespace OneBox_DataAccess.Infrastucture.Azure.Storage
             {
                 this.containerName = Utility.IdToDns(item.EmailToContainerId);
             }
-            /*
-            foreach (char c in containerName)
-            {
-                if ((c < 'a' || c > 'z') && c != '-' && (c < '0' || c > '9'))
-                {
-                    continue;
-                }
-                else
-                {
-                    this.containerName += c;
-                }
-            }
-            */
-            SetUpContainer();
+            SetUpContainer(this.containerName);
         }
 
-        public IEnumerable<ListBlobItemMirror> GetFlatBlobList()
+        public IEnumerable<ListBlobItemMirror> GetFlatBlobList(string path)
         {
             IEnumerable<IListBlobItem> listBlobs = cloudBlobContainer.ListBlobs(useFlatBlobListing: true);
             List<ListBlobItemMirror> listBlobsMirror = new List<ListBlobItemMirror>();
@@ -80,24 +86,25 @@ namespace OneBox_DataAccess.Infrastucture.Azure.Storage
             return listBlobsMirror;
 
         }
-
+        
         public void CreateNewFolder(string path)
         {
-            string newBlob = Utility.GetBlobName(path, GetContainerName());
-            var blob = cloudBlobContainer.GetBlockBlobReference(newBlob);
+            path = Utility.GetBlobName(path);
+            var blob = cloudBlobContainer.GetBlockBlobReference(path);
             blob.UploadTextAsync("");
         }
+        
 
         public void AddNewFile(string path, Stream dataStream)
         {
-            string newBlob = Utility.GetBlobName(path, GetContainerName());
+            string newBlob = Utility.GetBlobName(path);
             var blob = cloudBlobContainer.GetBlockBlobReference(newBlob);
             blob.UploadFromStreamAsync(dataStream);
         }
 
         public Stream GetStream(string currentPath)
         {
-            string blobName = Utility.GetBlobName(currentPath, GetContainerName());
+            string blobName = Utility.GetBlobName(currentPath);
             var blob = cloudBlobContainer.GetBlockBlobReference(blobName);
             MemoryStream stream = new MemoryStream();
             blob.DownloadToStream(stream);
@@ -106,7 +113,7 @@ namespace OneBox_DataAccess.Infrastucture.Azure.Storage
 
         public void AddNewFileChunk(Stream dataStream, long chunkIndex, string blobPath, long totalFileSize)
         {
-            string newBlob = Utility.GetBlobName(blobPath, GetContainerName());
+            string newBlob = Utility.GetBlobName(blobPath);
 
             var blob = cloudBlobContainer.GetBlockBlobReference(newBlob);
             string blockId = Utility.GetBlockId(chunkIndex);
@@ -120,7 +127,7 @@ namespace OneBox_DataAccess.Infrastucture.Azure.Storage
 
         public void CommitFileChunks(string blobPath, int totalNumberOfChunks)
         {
-            string newBlob = Utility.GetBlobName(blobPath, GetContainerName());
+            string newBlob = Utility.GetBlobName(blobPath);
             var blob = cloudBlobContainer.GetBlockBlobReference(newBlob);
             List<string> blockIDs = new List<string>();
             for (int i = 1; i <= totalNumberOfChunks; ++i)
@@ -133,16 +140,16 @@ namespace OneBox_DataAccess.Infrastucture.Azure.Storage
 
         public long GetBlobSizeInBytes(string filePath)
         {
-            string blobName = Utility.GetBlobName(filePath, GetContainerName());
+            string blobName = Utility.GetBlobName(filePath);
             CloudBlockBlob blob = (CloudBlockBlob)cloudBlobContainer.GetBlockBlobReference(blobName);
-            //futu-i mortii masii!!!!!!!!!
+            // update the information of the blob;
             blob.FetchAttributes();
             return blob.Properties.Length;
         }
 
         public long GetBlobRangeToArrayByte(string filePath, byte[] buffer, long currentPosition, int chunkSize)
         {
-            string blobName = Utility.GetBlobName(filePath, GetContainerName());
+            string blobName = Utility.GetBlobName(filePath);
             var blob = cloudBlobContainer.GetBlobReference(blobName);
             long blobSize = GetBlobSizeInBytes(filePath);
             long readBytes = blobSize - currentPosition; // the remained bytes to read;
@@ -152,6 +159,13 @@ namespace OneBox_DataAccess.Infrastucture.Azure.Storage
             }          
             blob.DownloadRangeToByteArray(buffer, 0, currentPosition, readBytes);
             return readBytes;
+        }
+
+        public void DeleteBlob(string fullAzureBlobPath)
+        {
+            string blobName = Utility.GetBlobName(fullAzureBlobPath);
+            var blob = cloudBlobContainer.GetBlobReference(blobName);
+            blob.DeleteAsync();
         }
     }
 }

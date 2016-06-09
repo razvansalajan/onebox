@@ -6,6 +6,7 @@
 <div>
     @{
         string currentPath = "";
+        string rootName = "";
     }
     <ul class="list-group">
         @{
@@ -20,8 +21,10 @@
         {
             string s = Model.pathList[i];
             currentPath = currentPath + "/" + s;
+
             if (i == 0)
             {
+                rootName = s;
                 s = "OneBox";
             }
             if (i >= deUnde)
@@ -33,6 +36,8 @@
         }
         <div id="current_path_info" data-current_path='@currentPath'></div>
         <div id="current_path_info_selected_file" data-current_path_file='@currentPath'></div>
+        <div id="current_path_folder_to_move_from_treeview" data-current_path=""></div>
+        <div id="root_name" data-root_name='@rootName'></div>
     </ul>
 </div>
 

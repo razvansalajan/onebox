@@ -115,6 +115,7 @@
     <Compile Include="Domain\EmailToContainer.cs" />
     <Compile Include="Domain\SharedBlob.cs" />
     <Compile Include="Domain\StorageAccount.cs" />
+    <Compile Include="Domain\VirtualBlob.cs" />
     <Compile Include="Infrastucture\AppRoleManager.cs" />
     <Compile Include="Infrastucture\AppUserManager.cs" />
     <Compile Include="Infrastucture\Azure\Storage\CloudBlobContainerServices.cs" />
@@ -137,6 +138,18 @@
     <Compile Include="Migrations\201604282159284_email_to_container_table_delete_containername_column.Designer.cs">
       <DependentUpon>201604282159284_email_to_container_table_delete_containername_column.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605082312572_added_virtualblob.cs" />
+    <Compile Include="Migrations\201605082312572_added_virtualblob.Designer.cs">
+      <DependentUpon>201605082312572_added_virtualblob.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605151123222_resetEmailTable-delete.cs" />
+    <Compile Include="Migrations\201605151123222_resetEmailTable-delete.Designer.cs">
+      <DependentUpon>201605151123222_resetEmailTable-delete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605151125406_resetEmailtable_add.cs" />
+    <Compile Include="Migrations\201605151125406_resetEmailtable_add.Designer.cs">
+      <DependentUpon>201605151125406_resetEmailtable_add.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Azure\BlockBlobRepository.cs" />
@@ -146,9 +159,11 @@
     <Compile Include="Repositories\Database\Interfaces\IRepository.cs" />
     <Compile Include="Repositories\Database\Interfaces\ISharedBlobRepository.cs" />
     <Compile Include="Repositories\Database\Interfaces\IStorageAccountRepository.cs" />
+    <Compile Include="Repositories\Database\Interfaces\IVirtualBlobRepository.cs" />
     <Compile Include="Repositories\Database\Repository.cs" />
     <Compile Include="Repositories\Database\SharedBlobRepository.cs" />
     <Compile Include="Repositories\Database\StorageAccountRepository.cs" />
+    <Compile Include="Repositories\Database\VirtualBlobRepository.cs" />
     <Compile Include="Utilities\EmailService.cs" />
     <Compile Include="Utilities\Mocks\FileStreamMock.cs" />
     <Compile Include="Utilities\Utility.cs" />
@@ -175,6 +190,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604282159284_email_to_container_table_delete_containername_column.resx">
       <DependentUpon>201604282159284_email_to_container_table_delete_containername_column.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605082312572_added_virtualblob.resx">
+      <DependentUpon>201605082312572_added_virtualblob.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605151123222_resetEmailTable-delete.resx">
+      <DependentUpon>201605151123222_resetEmailTable-delete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605151125406_resetEmailtable_add.resx">
+      <DependentUpon>201605151125406_resetEmailtable_add.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
