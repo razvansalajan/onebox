@@ -1,4 +1,5 @@
-﻿using OneBox_BusinessLogic.AzureStorage;
+﻿
+using OneBox_DataAccess.DataServices;
 using OneBox_WebServices.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -16,10 +17,10 @@ namespace OneBox_WebServices.Controllers
 {
     public class UploadFileController : ApiController
     {
-        private IAzureServices azureServices;
-        public UploadFileController(IAzureServices serv)
+        private IDataServices dataServices;
+        public UploadFileController(IDataServices serv)
         {
-            this.azureServices = serv;
+            this.dataServices = serv;
         }
 
         public async Task<List<string>> PostAsync()
@@ -56,29 +57,12 @@ namespace OneBox_WebServices.Controllers
                         long totalNumberOfChunks = Int64.Parse(queryParam["resumableTotalChunks"]);
                         long chunkSize = Int64.Parse(queryParam["resumableChunkSize"]);
                         string blobPath = queryParam["currentPath"] + "/" + queryParam["resumableFilename"];
-                        azureServices.AddNewFileChunk(dataStream, chunkIndex, blobPath, totalFileSize);
+                        dataServices.AddNewFileChunk(dataStream, chunkIndex, blobPath, totalFileSize);
                         if (chunkIndex == totalNumberOfChunks)
                         {
-                            azureServices.CommitFileChunks(blobPath, (int)totalNumberOfChunks);
+                            dataServices.CommitFileChunks(blobPath, (int)totalNumberOfChunks);
                         }
                     }
-                    
-                    /*
-                    if (name.Equals("currentPath"))
-                    {
-                        byte[] content = new byte[dataStream.Length];
-                        dataStream.Read(content, 0, (int)dataStream.Length);
-                        currentPath = System.Text.Encoding.UTF8.GetString(content);
-                        continue;
-                    }
-
-                    //var xx = file.Headers.ContentDisposition.FileName
-
-                    string fileName = file.Headers.ContentDisposition.FileName;
-                    fileName = fileName.Replace("\"", "");
-                    this.azureServices.AddNewFile(currentPath, fileName, dataStream);
-                    messages.Add("File uploaded as " + dataStream.Length + " bytes)");
-                    */
                 }
 
                 return messages;

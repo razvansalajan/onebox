@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OneBox_DataAccess.Repositories.Azure
+namespace OneBox_DataAccess.DataServices
 {
-    public interface IAzureRepository
+    public interface IDataServices
     {
         void ConfigureContainer(string containerName);
         string GetContainerName(string emailAddress);

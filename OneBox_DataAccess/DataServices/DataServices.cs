@@ -12,13 +12,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OneBox_DataAccess.Repositories.Azure
+namespace OneBox_DataAccess.DataServices
 {
-    public class BlockBlobRepository : IAzureRepository
+    public class DataServices : IDataServices
     {
-        ICloudBlobContainerServices cloudBlobContainerServices;
+        IFileServices cloudBlobContainerServices;
         IVirtualBlobRepository virtualBlobRepository;
-        public BlockBlobRepository(ICloudBlobContainerServices services, IVirtualBlobRepository virtualBlobRepository)
+        public DataServices(IFileServices services, IVirtualBlobRepository virtualBlobRepository)
         {
             cloudBlobContainerServices = services;
             //ContainerName = containerName;
@@ -303,7 +303,7 @@ namespace OneBox_DataAccess.Repositories.Azure
             string fullAzureBlobPath = GetFullAzurePathFromVirtualPath(filePath);
             SetUpContainerForTheCurrentRequest(fullAzureBlobPath);
 
-            return cloudBlobContainerServices.GetBlobSizeInBytes(filePath);
+            return cloudBlobContainerServices.GetBlobSizeInBytes(fullAzureBlobPath);
         }
 
         public string GetContainerName(string emailAddress)
@@ -328,7 +328,6 @@ namespace OneBox_DataAccess.Repositories.Azure
             foreach (ListBlobItemMirror blob in listBlobItem)
             {
                 blob.Uri_AboslutePath = GetVirtualPath(blob.Uri_AboslutePath);
-
             }
 
             // Get all files in ther folders.
@@ -403,7 +402,7 @@ namespace OneBox_DataAccess.Repositories.Azure
             currentPath = Utility.Convention(currentPath);
             string fullAzureBlobPath = GetFullAzurePathFromVirtualPath(currentPath );
             SetUpContainerForTheCurrentRequest(fullAzureBlobPath);
-            return cloudBlobContainerServices.GetStream(currentPath);
+            return cloudBlobContainerServices.GetStream(fullAzureBlobPath);
         }
     }
 }

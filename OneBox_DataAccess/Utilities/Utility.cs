@@ -18,7 +18,7 @@ namespace OneBox_DataAccess.Utilities
         public const string LocalUsersRoleName = "localregisteredusers";
 
         public const string STORAGEACCOUNTNAME = "oneboxstorage";
-        public const string STORAGEACCOUNTKEY = "srhqodT4jo0wvZbzcZa3XWVM5SLI8Z4lRPGW2EOfUj2O1pREAc1fD+9y2YEVmWkue5NbgUMgw0dD7rInuqS6KQ==";
+        public const string STORAGEACCOUNTKEY = "OxLfPGv3n8xGPBGtgezyVcaSKJSJ881a5bwUWCGnpGA0i3BsSG0w7yhEk00c5vTrlZiL7eJuPqGznWcOj17GvQ==";
 
         public static string GetNextString(string absoluteUri, string filePath)
         {
@@ -214,24 +214,25 @@ namespace OneBox_DataAccess.Utilities
         /// <returns></returns>
         public static string GetExtention(string fileName)
         {
+            int pos = GetLastDotPosition(fileName);
             string s = "";
-            bool seenDot = false;
-            foreach(char c in fileName)
+            for(int i= pos; i<fileName.Count(); ++i)
             {
-                if (c == '.')
-                {
-                    seenDot = true;
-                    s += ".";
-                }
-                else
-                {
-                    if (seenDot)
-                    {
-                        s += c;
-                    }
-                }
+                s += fileName[i];
             }
             return s;
+        }
+
+        public static int GetLastDotPosition(string fileName)
+        {
+            for( int i=fileName.Count()-1; i>=0; --i)
+            {
+                if (fileName[i].Equals('.'))
+                {
+                    return i;
+                }
+            }
+            return -1;
         }
 
         /// <summary>
@@ -242,13 +243,10 @@ namespace OneBox_DataAccess.Utilities
         public static string GetFileNameWithoutDot(string fileName)
         {
             string s = "";
-            foreach(char c in fileName)
+            int pos = GetLastDotPosition(fileName);
+            for (int i = 0; i < pos; ++i)
             {
-                if (c == '.')
-                {
-                    break;
-                }
-                s += c;
+                s += fileName[i];
             }
             return s;
         }

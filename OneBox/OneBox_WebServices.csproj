@@ -219,6 +219,7 @@
     <Content Include="scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="scripts\bootstrap.js" />
     <Content Include="scripts\bootstrap.min.js" />
+    <Content Include="ClassDiagram1.cd" />
     <None Include="Properties\PublishProfiles\onebox.pubxml" />
     <None Include="scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="scripts\dropzone\basic.css" />
@@ -255,7 +256,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RoleAdminController.cs" />
     <Compile Include="Controllers\UploadFileController.cs" />
@@ -332,10 +332,6 @@
     <Folder Include="uploads\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OneBox_BusinessLogic\OneBox_BusinessLogic.csproj">
-      <Project>{51651fa0-6b02-474e-987f-0f8119e9696d}</Project>
-      <Name>OneBox_BusinessLogic</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OneBox_DataAccess\OneBox_DataAccess.csproj">
       <Project>{cee1c012-1014-4944-9ace-6697c15886ee}</Project>
       <Name>OneBox_DataAccess</Name>

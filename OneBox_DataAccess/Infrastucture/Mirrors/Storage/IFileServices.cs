@@ -9,7 +9,7 @@ using System.IO;
 
 namespace OneBox_DataAccess.Infrastucture.Azure.Storage
 {
-    public interface ICloudBlobContainerServices
+    public interface IFileServices
     {
         string GetContainerName(string emailAddress);
         void SetupNewContainer(string containerName);

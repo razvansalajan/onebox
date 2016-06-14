@@ -12,12 +12,12 @@ using OneBox_DataAccess.Repositories.Database.Interfaces;
 
 namespace OneBox_DataAccess.Infrastucture.Azure.Storage
 {
-    public class CloudBlobContainerServices : ICloudBlobContainerServices
+    public class AzureBlobStorageServices : IFileServices
     {
         private string containerName;
         private CloudBlobContainer cloudBlobContainer;
         private IEmailToContainerRepository emailToContainerRepo;
-        public CloudBlobContainerServices(IEmailToContainerRepository emailTo) 
+        public AzureBlobStorageServices(IEmailToContainerRepository emailTo) 
         {
             emailToContainerRepo = emailTo;
         }

@@ -209,7 +209,7 @@ $(document).ready(function ($) {
 
 $(document).ready(function ($) {
     $(document).on("click", "#rename_item", function () {
-        console.log("ceva");
+        //console.log("ceva");
         var new_name = $("#rename_item_input_field").val();
         var current_folder_path = $("#current_path_info").data('current_path');
         var current_path_selected_item = $("#current_path_info_selected_file").data("current_path_file");
@@ -313,14 +313,12 @@ $(document).ready(function ($) {
             });
 
             this.on('sending', function (file, xhr, formData) {
-                console.log($("#current_path_info").data('current_path'));
+                //console.log($("#current_path_info").data('current_path'));
                 formData.append("currentPath", $("#current_path_info").data('current_path'));
             });
 
             this.on("complete", function (data) {
                 //var res = eval('(' + data.xhr.responseText + ')');
-                console.log("ceva2");
-                console.log("s-a gatat2");
                 // make a call ajax to refresh the list of files
                 var current_folder_path = $("#current_path_info").data('current_path');
                 var dataGet = { filePath: current_folder_path };
@@ -342,7 +340,7 @@ $(document).ready(function ($) {
     };
 
     Dropzone.prototype.uploadFiles = function (files) {
-        console.log("ceva");
+       // console.log("ceva");
         var resumable = new Resumable({
             target: '/api/UploadFile',
             maxFiles: 10,
@@ -358,7 +356,7 @@ $(document).ready(function ($) {
             }
 
             resumable.on('fileAdded', function (file) {
-                console.log("din reusable upload starts or something");
+                //console.log("din reusable upload starts or something");
                 
                 resumable.upload();
             });

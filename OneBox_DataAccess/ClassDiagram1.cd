@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="OneBox_DataAccess.DatabaseContexts.ApplicationDbContext" Collapsed="true">
+    <Position X="11.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAIAAEAAAEAAAAIAAAAAAAA=</HashCode>
+      <FileName>DatabaseContexts\ApplicationDbContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OneBox_DataAccess.DatabaseContexts.IdentityDbInit" Collapsed="true">
+    <Position X="16.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DatabaseContexts\ApplicationDbContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OneBox_DataAccess.DataServices.DataServices" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BgCEAAAUAAAQwAAgAAAAMAAAICIAEAAAAAQACIggAAE=</HashCode>
+      <FileName>DataServices\DataServices.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OneBox_DataAccess.Domain.AppRole" Collapsed="true">
+    <Position X="13.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\AppRole.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OneBox_DataAccess.Domain.AppUser" Collapsed="true">
+    <Position X="16.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\AppUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OneBox_DataAccess.Domain.EmailToContainer" Collapsed="true">
+    <Position X="13.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\EmailToContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OneBox_DataAccess.Domain.VirtualBlob" Collapsed="true">
+    <Position X="16.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAIAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Domain\VirtualBlob.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OneBox_DataAccess.Infrastucture.AppRoleManager" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Infrastucture\AppRoleManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OneBox_DataAccess.Infrastucture.AppUserManager" Collapsed="true">
+    <Position X="9.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Infrastucture\AppUserManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OneBox_DataAccess.Infrastucture.Azure.Storage.AzureBlobStorageServices" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAIAAEAAAQgAAAAAAAMAAAAAIEIAAAAAQAgACgAAI=</HashCode>
+      <FileName>Infrastucture\Mirrors\Storage\AzureBlobStorageServices.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OneBox_DataAccess.Infrastucture.Azure.Storage.MockFileServices" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAIgAEAAAQgAAAAAAAMAQAAAIAEAAAAAQAgACgAQI=</HashCode>
+      <FileName>Infrastucture\Mirrors\Storage\MockFileServices.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OneBox_DataAccess.Infrastucture.Mirrors.ListBlobItemMirror" Collapsed="true">
+    <Position X="11.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Infrastucture\Mirrors\ListBlobItemMirror.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OneBox_DataAccess.Migrations.initcreation" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAMAAAAAAAAAAAAAAAAAAAAAAAAAAQEAAAAAI=</HashCode>
+      <FileName>Migrations\201603162313356_init-creation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OneBox_DataAccess.Migrations.shareblob_storageaccount" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAMAAAAAAAAAAAAAAAAAAAAAAAAAAQEAAAAAI=</HashCode>
+      <FileName>Migrations\201604262104418_shareblob_storageaccount.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OneBox_DataAccess.Migrations.emailtocontainer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAMAAAAAAAAAAAAAAAAAAAAAAAAAAQEAAAAAI=</HashCode>
+      <FileName>Migrations\201604271101027_emailtocontainer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OneBox_DataAccess.Migrations.email_to_container_table_delete_containername_column" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAMAAAAAAAAAAAAAAAAAAAAAAAAAAQEAAAAAI=</HashCode>
+      <FileName>Migrations\201604282159284_email_to_container_table_delete_containername_column.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OneBox_DataAccess.Migrations.added_virtualblob" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAMAAAAAAAAAAAAAAAAAAAAAAAAAAQEAAAAAI=</HashCode>
+      <FileName>Migrations\201605082312572_added_virtualblob.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OneBox_DataAccess.Migrations.resetEmailTabledelete" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAMAAAAAAAAAAAAAAAAAAAAAAAAAAQEAAAAAI=</HashCode>
+      <FileName>Migrations\201605151123222_resetEmailTable-delete.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OneBox_DataAccess.Migrations.resetEmailtable_add" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAMAAAAAAAAAAAAAAAAAAAAAAAAAAQEAAAAAI=</HashCode>
+      <FileName>Migrations\201605151125406_resetEmailtable_add.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OneBox_DataAccess.Migrations.Configuration" Collapsed="true">
+    <Position X="13.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Migrations\Configuration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OneBox_DataAccess.Repositories.Database.EmailToContainerRepository" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Repositories\Database\EmailToContainerRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="OneBox_DataAccess.Repositories.Database.Repository&lt;T&gt;" Collapsed="true">
+    <Position X="3.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAIAAAAAAiAAAABAAAAABAQAABAIAAAAAgAAAAAQAAA=</HashCode>
+      <FileName>Repositories\Database\Repository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="OneBox_DataAccess.Repositories.Database.VirtualBlobRepository" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAACAAAAAABAAAAAAAAAAAAAAAACAAIAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\Database\VirtualBlobRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="OneBox_DataAccess.Utilities.EmailService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\EmailService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="OneBox_DataAccess.Utilities.Utility" Collapsed="true">
+    <Position X="15" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACRBAAQCBAAAwQAAQAAAAAAARAABAwARAAAAAAQgAAA=</HashCode>
+      <FileName>Utilities\Utility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OneBox_DataAccess.Utilities.Mocks.FileStreamMock" Collapsed="true">
+    <Position X="15" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAgGAAAAABgAAAAAAAAAAAAAAEoACA=</HashCode>
+      <FileName>Utilities\Mocks\FileStreamMock.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="OneBox_DataAccess.DataServices.IDataServices" Collapsed="true">
+    <Position X="9.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAEAAAQwAAAAAAAMAAAIAIAAAAAAAQACAggAAA=</HashCode>
+      <FileName>DataServices\IDataServices.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OneBox_DataAccess.Infrastucture.Azure.Storage.IFileServices" Collapsed="true">
+    <Position X="11.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAEAAAQgAAAAAAAMAAAAAIAAAAAAAQAgACgAAI=</HashCode>
+      <FileName>Infrastucture\Mirrors\Storage\IFileServices.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OneBox_DataAccess.Repositories.Database.Interfaces.IEmailToContainerRepository" Collapsed="true">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Repositories\Database\Interfaces\IEmailToContainerRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OneBox_DataAccess.Repositories.Database.Interfaces.IRepository&lt;T&gt;" Collapsed="true">
+    <Position X="3.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAIAAAAAAAAAAABAAAAABAQAABAAAAAAAgAAAAAQAAA=</HashCode>
+      <FileName>Repositories\Database\Interfaces\IRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OneBox_DataAccess.Repositories.Database.Interfaces.IVirtualBlobRepository" Collapsed="true">
+    <Position X="7.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAACAAAAAABAAAAAAAAAAAAAAAACAAIAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\Database\Interfaces\IVirtualBlobRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

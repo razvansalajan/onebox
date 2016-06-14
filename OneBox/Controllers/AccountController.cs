@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using OneBox_BusinessLogic.AzureStorage;
-using OneBox_BusinessLogic.Providers.IProviders;
+using OneBox_DataAccess.DataServices;
 using OneBox_DataAccess.Domain;
 using OneBox_DataAccess.Infrastucture;
+
+using OneBox_DataAccess.Repositories.Database.Interfaces;
 using OneBox_DataAccess.Utilities;
 using OneBox_Infrastructure.DataTransferObjects;
 using OneBox_WebServices.Infrastructure;
@@ -26,13 +27,13 @@ namespace OneBox_WebServices.Controllers
     /// Display the info for the user after authentification.
     public class AccountController : Controller
     {
-        private IAzureServices azureServices;
-        private IEmailContainerProvider emailContainerProvider;
+        private IDataServices dataServices;
+        private IEmailToContainerRepository emailToContainerRepository;
         
-        public AccountController(IAzureServices azureServices, IEmailContainerProvider emailContainerProvider)
+        public AccountController(IDataServices dataServices, IEmailToContainerRepository emailToContainerRepository)
         {
-            this.azureServices = azureServices;
-            this.emailContainerProvider = emailContainerProvider;
+            this.dataServices = dataServices;
+            this.emailToContainerRepository = emailToContainerRepository;
         }
 
         public PartialViewResult ListOfFiles(string filePath)
@@ -49,7 +50,7 @@ namespace OneBox_WebServices.Controllers
             if (filePath == "")
             {
                 AppUser user = GetAppUserFromIdentityUser();
-                filePath = azureServices.GetContainerName(user.Email);
+                filePath = dataServices.GetContainerName(user.Email);
             }
             return View(GetFiles(filePath));
         }
@@ -69,7 +70,7 @@ namespace OneBox_WebServices.Controllers
             byte[] buffer = new Byte[chunkSize];
 
             // Length of the file:
-            long totalLength = azureServices.GetBlobSizeInBytes(filePath);
+            long totalLength = dataServices.GetBlobSizeInBytes(filePath);
 
             // Total bytes to read:
             long dataToRead = totalLength;
@@ -87,7 +88,7 @@ namespace OneBox_WebServices.Controllers
                     {
                         // Read the data in buffer.
                         //length = fileStream.Read(buffer, 0, 10000);
-                        long readLength = azureServices.GetBlobRangeToArrayByte(filePath, buffer, currentPosition, chunkSize);
+                        long readLength = dataServices.GetBlobRangeToArrayByte(filePath, buffer, currentPosition, chunkSize);
                         currentPosition += readLength;
                         // Write the data to the current output stream.
                         Response.OutputStream.Write(buffer, 0, (int)readLength);
@@ -134,7 +135,7 @@ namespace OneBox_WebServices.Controllers
                 return Content("false");
             }
 
-            azureServices.CreateNewFolder(currentPath, newFolder);
+            dataServices.CreateNewFolder(currentPath, newFolder);
 
             return Content("true");
 
@@ -190,7 +191,7 @@ namespace OneBox_WebServices.Controllers
             {
                 return (Content("false"));
             }
-            azureServices.DeleteFile(currentPathSelectedItem);
+            dataServices.DeleteBlob(currentPathSelectedItem);
             return Content("true");
         }
 
@@ -205,7 +206,7 @@ namespace OneBox_WebServices.Controllers
                 return (Content("false"));
             }
 
-            azureServices.MoveItemToFolder(selectedFolderToMove, currentFolderDestination);
+            dataServices.MoveItemToFolder(selectedFolderToMove, currentFolderDestination);
 
             return Content("true");
         }
@@ -216,7 +217,7 @@ namespace OneBox_WebServices.Controllers
             {
                 return Content("false");
             }
-            azureServices.RenameFile(currentFolderPath, currentPathSelectedItem, newSelectedItemName);
+            dataServices.RenameBlob(currentFolderPath, currentPathSelectedItem, newSelectedItemName);
 
             return Content("true");
         }
@@ -224,7 +225,7 @@ namespace OneBox_WebServices.Controllers
         private FileSystemViewModel GetFiles(string filePath)
         {
             FileSystemViewModel fileSystem = new FileSystemViewModel();
-            foreach(FileDto item in azureServices.GetFiles(filePath))
+            foreach(FileDto item in dataServices.GetFiles(filePath))
             {
                 string fileType = "folder";
                 if (item.ifFile)
@@ -350,8 +351,8 @@ namespace OneBox_WebServices.Controllers
         {
             // TODO : ceva erori pe aici ?
             //AppUser user = UserManager.FindById(User.Identity.GetUserId());
-            emailContainerProvider.AddEmail(email);
-            azureServices.ConfigureServices(email);
+            emailToContainerRepository.AddEmail(email);
+            dataServices.ConfigureContainer(email);
             //defaultPath = "/" + azureServices.GetContainerName();
         }
 
@@ -374,7 +375,7 @@ namespace OneBox_WebServices.Controllers
             info.Add("User", GetIdentityUser().Name);
             info.Add("Authentificated", GetIdentityUser().IsAuthenticated);
             info.Add("Authnetification type", GetIdentityUser().AuthenticationType);
-            info.Add("container name:", azureServices.GetContainerName(GetAppUserFromIdentityUser().Email));
+            info.Add("container name:", dataServices.GetContainerName(GetAppUserFromIdentityUser().Email));
             var id = GetIdentityUser().GetUserId();
 
             var user = UserManager.FindById(id);

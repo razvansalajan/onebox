@@ -10,5 +10,6 @@ namespace OneBox_DataAccess.Domain
     {
         public int EmailToContainerId { get; set; }
         public string Email { get; set; }
+        public virtual ICollection<SharedItem_User> SharedItem_User{get; set; }
     }
 }

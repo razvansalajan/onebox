@@ -1,12 +1,12 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OneBox_DataAccess.Repositories.Azure;
 using OneBox_DataAccess.Infrastucture.Azure.Storage;
 using System.Collections;
 using OneBox_Infrastructure.DataTransferObjects;
 using System.Collections.Generic;
 using System.IO;
 using OneBox_DataAccess.Utilities.Mocks;
+using OneBox_DataAccess.DataServices;
 
 namespace UnitTests
 {
@@ -14,7 +14,7 @@ namespace UnitTests
     public class UnitTestBlobkBlobRepository
     {
         [TestMethod]
-        public void TestGetFiles(IAzureRepository fakeRepo)
+        public void TestGetFiles(IDataServices fakeRepo)
         {
            // IAzureRepository fakeRepo = new BlockBlobRepository(new MockCloudBlobContainerServices());
             string containerName = "root";
